@@ -9,7 +9,7 @@
 
 <h2>🚀 Demo</h2>
 
-[https://amiastrobaba.pages.dev/](https://amiastrobaba.pages.dev/)
+[https://astro-shree.com/](https://astro-shree.com/)
 
   
 <h2>🧐 Features</h2>

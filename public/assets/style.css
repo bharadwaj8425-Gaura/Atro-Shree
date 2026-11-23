@@ -242,3 +242,7 @@ footer{background:#0b0720;color:#c4b5fd;padding:50px 0 24px;font-size:.9rem}foot
 .btn .mrp{color:inherit;opacity:.6}.btn .offtag{display:none}
 .paybtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.paybtns .btn{color:#fff;padding:11px 8px}
 .pb-phonepe{background:#5f259f}.pb-gpay{background:#1a73e8}.pb-paytm{background:#00b9f1}.pb-any{background:#1c1233}
+
+.logo .lt{display:flex;flex-direction:column;line-height:1.05}.logo .lt b{font-family:'Cinzel',serif;letter-spacing:.14em;font-size:1.05rem;background:linear-gradient(90deg,#fde68a,#f59e0b,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}.logo .lt small{font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.22em;color:#c4b5fd;text-transform:uppercase;font-weight:500}
+@media(max-width:400px){.logo .lt small{display:none}}
+@media(min-width:1101px){.logo .lt small{display:none}.menu a{padding:8px 7px;font-size:.84rem}.nav{gap:10px}}

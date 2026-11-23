@@ -53,7 +53,7 @@
     $('#langBtn').textContent = lang === 'hi' ? 'English' : 'हिंदी';
     document.documentElement.lang = lang; document.body.classList.toggle('hi', lang === 'hi'); if (App.offerBar) App.offerBar();
     $('#foot').innerHTML = `<div class="grid g4">
-      <div><h4>ॐ Astro-Shree</h4><p>${T('Vedic astrology, numerology & tarot with love and honesty — by Manasvi Bharadwaj.', 'प्रेम और ईमानदारी के साथ वैदिक ज्योतिष, अंक ज्योतिष और टैरो — मानसवी भारद्वाज द्वारा।')}</p>
+      <div><img src="images/logo-full.svg" alt="Astro Shree — Know your hidden destiny" style="width:220px;margin-bottom:8px"><p>${T('Vedic astrology, numerology & tarot with love and honesty — by Manasvi Bharadwaj.', 'प्रेम और ईमानदारी के साथ वैदिक ज्योतिष, अंक ज्योतिष और टैरो — मानसवी भारद्वाज द्वारा।')}</p>
         <a href="${waLink('Radhe Radhe 🙏')}" target="_blank" rel="noopener">💬 WhatsApp ${PHONE}</a><a href="${INSTA}" target="_blank" rel="noopener">📸 Instagram @astro_shree25_</a></div>
       <div><h4>${T('Free Tools', 'फ़्री टूल्स')}</h4><a href="#/kundli">${T('Janam Kundli', 'जन्म कुंडली')}</a><a href="#/milan">${T('Kundli Milan', 'कुंडली मिलान')}</a><a href="#/panchang">${T('Aaj ka Panchang', 'आज का पंचांग')}</a><a href="#/rashifal">${T('Daily Rashifal', 'दैनिक राशिफल')}</a><a href="#/numerology">${T('Numerology', 'अंक ज्योतिष')}</a><a href="#/tarot">${T('Tarot', 'टैरो')}</a></div>
       <div><h4>${T('Explore', 'और देखें')}</h4><a href="#/games">🎮 ${T('Divine Games', 'दिव्य गेम्स')}</a><a href="#/chat">🤖 Shree AI</a><a href="#/vault">👨‍👩‍👧 ${T('Family Kundli Vault', 'परिवार कुंडली तिजोरी')}</a><a href="#/vrat">🪔 ${T('Vrat Calendar', 'व्रत कैलेंडर')}</a><a href="#/blessings">🙏 ${T('Divine Blessings', 'दिव्य आशीर्वाद')}</a><a href="#/seva">💎 ${T('Book a Reading', 'रीडिंग बुक करें')}</a></div>
@@ -155,7 +155,7 @@
     v.innerHTML = `
     <section class="hero hero2"><canvas id="stars"></canvas><div class="wrap">
       <div class="hero-txt">
-        <span class="kicker" style="color:#fbbf24">✨ ${T('Jyotish · Numerology · Tarot · Games', 'ज्योतिष · अंक ज्योतिष · टैरो · गेम्स')}</span>
+        <span class="kicker" style="color:#fbbf24">✨ ${T('Know your hidden destiny', 'अपना छुपा भाग्य जानें')} · ${T('Jyotish · Numerology · Tarot', 'ज्योतिष · अंक · टैरो')}</span>
         <h1>${T('Know your stars.', 'सितारे बोलेंगे,')}<br><span class="gold-text">${T('Shape your destiny.', 'भाग्य बदलेगा।')}</span></h1>
         <p class="lead">${T('Free Kundli, Panchang, Numerology, Tarot & daily divine games — and personal guidance whenever you need it.', 'फ़्री कुंडली, पंचांग, अंक ज्योतिष, टैरो और रोज़ के दिव्य गेम्स — और ज़रूरत पड़ने पर व्यक्तिगत मार्गदर्शन।')}</p>
         <div class="row hero-cta"><a class="btn btn-gold btn-lg" href="#/kundli">🪐 ${T('Free Kundli', 'फ़्री कुंडली')}</a><a class="btn btn-violet btn-lg" href="#/games">🎮 ${T('Play & Win', 'खेलें और जीतें')}</a></div>

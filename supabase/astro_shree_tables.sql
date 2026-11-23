@@ -46,3 +46,12 @@ create table if not exists public.astro_reviews (
 );
 alter table public.astro_reviews enable row level security;
 comment on table public.astro_reviews is 'Astro-Shree customer reviews; shown on site only after admin approval.';
+
+-- Admin settings (auto-approve switch)
+create table if not exists public.astro_settings (
+  key text primary key,
+  value jsonb not null,
+  updated_at timestamptz not null default now()
+);
+alter table public.astro_settings enable row level security;
+insert into public.astro_settings (key, value) values ('auto_approve', 'true'::jsonb) on conflict (key) do nothing;

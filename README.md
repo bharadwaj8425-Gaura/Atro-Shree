@@ -34,6 +34,12 @@ UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works i
 4. You get a WhatsApp alert (optional) with one-tap ✓ Approve / ✕ Reject links, or approve in `/admin`.
 5. Always cross-check your UPI app before delivering.
 
+## Instant access after payment
+- Every paid service unlocks a **Premium Report** on the customer's phone the moment the payment is verified: Jyotish services → Premium Kundli Report, Numerology services → Premium Numerology Report, Tarot services → Premium Celtic Cross Tarot, Sampoorna → all three. Reports are written by Gemini from the customer's own chart / numbers / cards and can be printed as PDF (`#/my` — "My Reports").
+- If a payment is pending, the customer's page keeps checking and unlocks automatically when you approve it (in `/admin` or from the WhatsApp quick link).
+- **Restore access** on another phone: WhatsApp number + UTR.
+- **Admin → Overview:** ⚡ *Auto-approve payments* switch (ON = AI-verified payments confirm instantly; OFF = you approve each one) and 🔓 *Unlock all Premium Reports on this device* (free access for you).
+
 ## Go live on Cloudflare Pages (free) — ≈10 min
 Database tables (`astro_events`, `astro_payments`, `astro_reviews`) are already created in the Supabase project.
 

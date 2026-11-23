@@ -74,7 +74,7 @@
         .map(x => `<div class="stat"><small>${x[0]}</small><b>${x[1]}</b></div>`).join('')}</div></div>
 
       <div class="grid g2" style="margin-top:18px"><div class="card center"><h3>${T('Lagna Chart (D1)', 'लग्न कुंडली (D1)')}</h3>${J().chartSVG(k, { lang: App.lang })}<p class="tiny muted">${T('North Indian style · numbers are rashis · * = retrograde', 'उत्तर भारतीय शैली · अंक = राशि · * = वक्री')}</p></div>
-        <div class="card center"><h3>${T('Navamsa Chart (D9)', 'नवांश कुंडली (D9)')}</h3>${J().chartSVG(k, { lang: App.lang, navamsa: true, stroke: '#6d28d9', bg: '#faf5ff' })}<p class="tiny muted">${T('D9 shows marriage, dharma & inner strength', 'D9 विवाह, धर्म और आंतरिक शक्ति दर्शाता है')}</p></div></div>
+        <div class="card center"><h3>${T('Navamsa Chart (D9)', 'नवांश कुंडली (D9)')}</h3>${J().chartSVG(k, { lang: App.lang, navamsa: true, stroke: '#d97706', bg: '#fffbeb' })}<p class="tiny muted">${T('D9 shows marriage, dharma & inner strength', 'D9 विवाह, धर्म और आंतरिक शक्ति दर्शाता है')}</p></div></div>
 
       <div class="card" style="margin-top:18px"><h3>🌌 ${T('Planet positions', 'ग्रह स्थिति')}</h3><div class="scroll"><table class="t"><tr><th>${T('Planet', 'ग्रह')}</th><th>${T('Rashi', 'राशि')}</th><th>${T('Degree', 'अंश')}</th><th>${T('House', 'भाव')}</th><th>${T('Nakshatra', 'नक्षत्र')}</th><th>${T('Status', 'स्थिति')}</th></tr>
         <tr><td><b>${T('Lagna', 'लग्न')}</b></td><td>${rn(k.lagna.sign)}</td><td>${k.lagna.deg}</td><td>1</td><td>${nk(k.lagna.nak)}</td><td></td></tr>

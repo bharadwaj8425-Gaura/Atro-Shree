@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Astro-Shree logo">
+  <defs>
+    <linearGradient id="lg-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset=".5" stop-color="#f59e0b"/><stop offset="1" stop-color="#ea580c"/></linearGradient>
+    <radialGradient id="lg-night" cx=".5" cy=".42" r=".65"><stop offset="0" stop-color="#4c1d95"/><stop offset=".7" stop-color="#1e1446"/><stop offset="1" stop-color="#0b0720"/></radialGradient>
+    <radialGradient id="lg-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff7d6"/><stop offset=".55" stop-color="#fbbf24"/><stop offset="1" stop-color="#f97316"/></radialGradient>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="url(#lg-night)"/>
+  <circle cx="100" cy="100" r="92" fill="none" stroke="url(#lg-gold)" stroke-width="5"/>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="#fbbf24" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="3 5"/>
+  <g fill="#fde68a">
+    <circle cx="100" cy="14" r="3.4"/><circle cx="143" cy="25.5" r="2.4"/><circle cx="174.5" cy="57" r="2.4"/><circle cx="186" cy="100" r="3.4"/><circle cx="174.5" cy="143" r="2.4"/><circle cx="143" cy="174.5" r="2.4"/>
+    <circle cx="100" cy="186" r="3.4"/><circle cx="57" cy="174.5" r="2.4"/><circle cx="25.5" cy="143" r="2.4"/><circle cx="14" cy="100" r="3.4"/><circle cx="25.5" cy="57" r="2.4"/><circle cx="57" cy="25.5" r="2.4"/>
+  </g>
+  <g stroke="url(#lg-gold)" stroke-width="3" stroke-linecap="round">
+    <path d="M100 38v10M100 152v10M38 100h10M152 100h10M56 56l7 7M137 137l7 7M144 56l-7 7M63 137l-7 7"/>
+  </g>
+  <circle cx="100" cy="100" r="42" fill="url(#lg-sun)"/>
+  <path d="M128 66a36 36 0 1 0 6 46a28 28 0 1 1 -6 -46z" fill="#1e1446" opacity=".22"/>
+  <path transform="translate(70.88 125.69) scale(0.058 -0.058)" fill="#7c2d12" d="M426 400Q440 372 454.0 353.5Q468 335 491 335Q509 335 522.5 347.5Q536 360 552 388L575 428Q612 491 660.5 519.0Q709 547 784 547Q847 547 890.0 521.5Q933 496 955.0 450.5Q977 405 977 342Q977 279 955.0 232.5Q933 186 888.5 160.0Q844 134 775 134Q725 134 686.0 148.0Q647 162 614 189L683 279Q703 263 722.0 254.5Q741 246 762 246Q794 246 815.5 269.5Q837 293 837 343Q837 387 822.5 411.0Q808 435 775 435Q749 435 730.5 420.0Q712 405 691 369L671 334Q640 281 604.5 255.5Q569 230 517 230Q489 230 460.5 243.0Q432 256 407.5 280.0Q383 304 367 337ZM333 632Q397 632 437.0 611.5Q477 591 495.5 555.5Q514 520 514 475Q514 397 451.0 349.5Q388 302 266 294L247 397Q299 403 327.5 412.5Q356 422 367.5 435.5Q379 449 379 468Q379 493 362.5 505.5Q346 518 316 518Q286 518 256.0 509.5Q226 501 196 484L158 590Q195 610 239.5 621.0Q284 632 333 632ZM529 217Q529 168 505.5 130.0Q482 92 438.5 70.5Q395 49 336 49Q270 49 216.0 75.5Q162 102 116.0 164.5Q70 227 27 336L135 389Q179 274 222.0 219.0Q265 164 320 164Q356 164 376.5 182.0Q397 200 397 234Q397 268 373.5 295.5Q350 323 309 347L373 374L416 369Q431 358 446.0 343.0Q461 328 471 312L503 294Q516 277 522.5 257.5Q529 238 529 217ZM594 781Q594 805 611.0 821.0Q628 837 655 837Q682 837 699.0 821.0Q716 805 716 781Q716 756 699.0 740.0Q682 724 655 724Q628 724 611.0 740.0Q594 756 594 781ZM867 785Q856 684 800.5 641.0Q745 598 655 598Q566 598 510.0 641.0Q454 684 443 785L541 808Q545 743 574.5 713.0Q604 683 655 683Q706 683 735.5 713.0Q765 743 769 808Z"/>
+  <path d="M150 40l2.6 6.4 6.4 2.6-6.4 2.6-2.6 6.4-2.6-6.4-6.4-2.6 6.4-2.6z" fill="#fff"/>
+  <path d="M46 150l1.8 4.4 4.4 1.8-4.4 1.8-1.8 4.4-1.8-4.4-4.4-1.8 4.4-1.8z" fill="#fde68a"/>
+</svg>

@@ -21,7 +21,13 @@ Website of **Manasvi Bharadwaj** — https://astro-shree.com
 
 Accuracy: planet positions use [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT) with Lahiri ayanamsa; checked against Swiss Ephemeris — max difference ≈ 20 arc-seconds. Run `npm test`.
 
+## Offers & prizes
+- **Launch offer:** 20% off every reading till 31 Dec 2026 (₹51→₹41, ₹101→₹81, ₹151→₹121, ₹251→₹201, ₹501→₹401). Change with `OFFER_PCT`, `OFFER_TILL` (YYYY-MM-DD), `OFFER_NAME`; set `OFFER_PCT=0` to switch off.
+- **Coupons** (checked on the server): `SHUBH11` = ₹11 off (Kismat Wheel prize / 3-day streak), `SAPTAH21` = ₹21 off (7-day streak). Change with `COUPONS="SHUBH11=11,SAPTAH21=21"`. Lowest possible price is ₹21.
+
 ## How payments work (same system as the Resume Builder)
+UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works in PhonePe, Google Pay, Paytm, BHIM and all bank apps. On mobile there are direct PhonePe / Google Pay / Paytm buttons and a "Save QR" button (scan from gallery). Set `UPI_NAME` to the account-holder name exactly as the bank shows it.
+
 1. Customer picks a service → fills details → sees a UPI QR with the **exact amount** (or taps "Open UPI app" on mobile).
 2. Customer pastes the **UTR** and uploads the **screenshot**.
 3. Gemini reads the screenshot: amount, payee, UTR, date, success status, signs of editing. All OK → booking **auto-confirmed**; anything off → **pending**.

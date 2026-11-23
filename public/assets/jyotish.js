@@ -216,6 +216,41 @@
   }
   function moonSignNow(when) { return signOf(siderealLon('Moon', when || new Date())); }
 
+  /* ---------------- Vrat / festival calendar (tithi at sunrise) ---------------- */
+  function addDays(dateStr, n) { const [y, m, d] = dateStr.split('-').map(Number), t = new Date(Date.UTC(y, m - 1, d + n)); return t.toISOString().slice(0, 10); }
+  function sunriseInfo(dateStr, obs, tz) {
+    const midnight = localToUTC(dateStr, '00:00', tz), r = A.SearchRiseSet('Sun', obs, +1, midnight, 1);
+    const t = r ? r.date : localToUTC(dateStr, '06:00', tz), ay = ayanamsa(t), sun = siderealLon('Sun', t, ay), moon = siderealLon('Moon', t, ay);
+    return { date: dateStr, rise: t, t: Math.floor(norm(moon - sun) / 12), sunSign: signOf(sun) };
+  }
+  const VRATS = [
+    { t: 10, key: 'ekadashi', en: 'Shukla Ekadashi', hi: 'शुक्ल एकादशी', ic: '🌿' }, { t: 25, key: 'ekadashi', en: 'Krishna Ekadashi', hi: 'कृष्ण एकादशी', ic: '🌿' },
+    { t: 14, key: 'purnima', en: 'Purnima', hi: 'पूर्णिमा', ic: '🌕' }, { t: 29, key: 'amavasya', en: 'Amavasya', hi: 'अमावस्या', ic: '🌑' },
+    { t: 12, key: 'pradosh', en: 'Pradosh Vrat (Shukla)', hi: 'प्रदोष व्रत (शुक्ल)', ic: '🔱' }, { t: 27, key: 'pradosh', en: 'Pradosh Vrat (Krishna)', hi: 'प्रदोष व्रत (कृष्ण)', ic: '🔱' },
+    { t: 28, key: 'shivratri', en: 'Masik Shivratri', hi: 'मासिक शिवरात्रि', ic: '🕉️' }, { t: 3, key: 'vinayaka', en: 'Vinayaka Chaturthi', hi: 'विनायक चतुर्थी', ic: '🐘' },
+    { t: 18, key: 'sankashti', en: 'Sankashti Chaturthi', hi: 'संकष्टी चतुर्थी', ic: '🐘' }
+  ];
+  function vratCalendar(startDate, days, lat, lon, tz) {
+    const obs = new A.Observer(+lat, +lon, 0), info = [];
+    for (let i = -1; i <= days + 1; i++) info.push(sunriseInfo(addDays(startDate, i), obs, tz));
+    const out = [];
+    for (let i = 1; i <= days; i++) {
+      const prev = info[i - 1], cur = info[i], next = info[i + 1];
+      VRATS.forEach(v => {
+        const today = cur.t === v.t && prev.t !== v.t;
+        const kshaya = (next.t - cur.t + 30) % 30 === 2 && (v.t - cur.t + 30) % 30 === 1; // tithi skipped between two sunrises
+        if (today || kshaya) out.push({ date: cur.date, key: v.key, en: v.en, hi: v.hi, ic: v.ic });
+      });
+      if (cur.sunSign !== prev.sunSign) { // Sankranti: local date of the Sun's ingress
+        let a = prev.rise.getTime(), b = cur.rise.getTime();
+        for (let k = 0; k < 25; k++) { const m = (a + b) / 2; if (signOf(siderealLon('Sun', new Date(m))) === prev.sunSign) a = m; else b = m; }
+        const at = new Date(b), loc = new Date(at.getTime() + tzOffsetMin(tz, at) * 60000).toISOString().slice(0, 10), s = cur.sunSign;
+        out.push({ date: loc, key: 'sankranti', at, en: (s === 9 ? 'Makar' : RASHI[s].sa) + ' Sankranti', hi: (s === 9 ? 'मकर' : RASHI[s].hi) + ' संक्रांति', ic: '☀️' });
+      }
+    }
+    return out.sort((x, y) => x.date < y.date ? -1 : x.date > y.date ? 1 : 0);
+  }
+
   /* ---------------- Ashtakoota (36 Gun Milan) ---------------- */
   const VARNA = [2, 1, 0, 3, 2, 1, 0, 3, 2, 1, 0, 3]; // by rashi: 3 Brahmin, 2 Kshatriya, 1 Vaishya, 0 Shudra
   const VARNA_NAMES = ['Shudra', 'Vaishya', 'Kshatriya', 'Brahmin'];
@@ -300,5 +335,5 @@
 
   return { RASHI, NAK, PLANETS, PLANET_ORDER, DASHA_LORDS, DASHA_YEARS, GANA, NADI, YONI_NAMES, YONI_OF, YONI_TBL, VASHYA_TBL,
     norm, ayanamsa, siderealLon, ascendant, signOf, nakOf, dms, kundli, vimshottari, currentDasha, panchang, tithiFor, gunMilan, chartSVG,
-    localToUTC, tzOffsetMin, moonSignNow, maitriScore };
+    localToUTC, tzOffsetMin, moonSignNow, maitriScore, vratCalendar, addDays };
 });

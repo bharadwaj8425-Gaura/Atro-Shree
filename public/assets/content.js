@@ -181,5 +181,19 @@
     ['Om Durgayai Namah', 'ॐ दुर्गायै नमः'], ['Om Namo Narayanaya', 'ॐ नमो नारायणाय'], ['Shri Ram Jai Ram Jai Jai Ram', 'श्री राम जय राम जय जय राम']
   ];
 
-  return { dr, NUM, MISSING, numerology, nameNumber, numberCheck, DECK, SUITS, drawCards, seeded, GOCHAR, rashifal, COLORS, LAGNA_TXT, DASHA_TXT, GEM, MANTRA };
+  /* Personal Year (numerology) — for "How will 2027 be for you?" */
+  const PY_TXT = {
+    1: { t: ['Year of New Beginnings', 'नई शुरुआत का साल'], en: 'A fresh 9-year cycle starts. Start the business, job switch or habit you have been postponing — your efforts this year set the tone for the next decade.', hi: 'नया 9-वर्षीय चक्र शुरू। जो व्यापार, नौकरी बदलाव या आदत टाल रहे थे, उसे शुरू करें — इस साल की मेहनत अगले दशक की दिशा तय करेगी।', best: ['Jan, Oct', 'जनवरी, अक्टूबर'] },
+    2: { t: ['Year of Love & Partnerships', 'प्रेम और साझेदारी का साल'], en: 'Patience brings sweet results. Relationships, marriage talks and partnerships grow. Avoid rushing — cooperation is your superpower.', hi: 'धैर्य मीठे फल देगा। रिश्ते, विवाह की बात और साझेदारी बढ़ेगी। जल्दबाज़ी न करें — सहयोग आपकी ताक़त है।', best: ['Feb, Nov', 'फ़रवरी, नवंबर'] },
+    3: { t: ['Year of Joy & Expression', 'आनंद और अभिव्यक्ति का साल'], en: 'Creativity, social life and fun increase. Great for learning, content, marketing and travel. Watch spending on luxuries.', hi: 'रचनात्मकता, मेल-जोल और आनंद बढ़ेगा। सीखने, कंटेंट, मार्केटिंग और यात्रा के लिए बढ़िया। विलासिता पर ख़र्च सँभालें।', best: ['Mar, Dec', 'मार्च, दिसंबर'] },
+    4: { t: ['Year of Hard Work & Foundations', 'मेहनत और नींव का साल'], en: 'Build solid foundations — savings, property, health routine, skills. Results may feel slow, but whatever you build this year lasts.', hi: 'मज़बूत नींव बनाएँ — बचत, संपत्ति, सेहत की दिनचर्या, कौशल। परिणाम धीमे लग सकते हैं, पर इस साल बनी चीज़ें टिकाऊ होंगी।', best: ['Apr, Jul', 'अप्रैल, जुलाई'] },
+    5: { t: ['Year of Change & Freedom', 'बदलाव और स्वतंत्रता का साल'], en: 'Expect movement — travel, new city, new job or new people. Say yes to opportunities but avoid impulsive money decisions.', hi: 'हलचल का साल — यात्रा, नया शहर, नई नौकरी या नए लोग। अवसरों को हाँ कहें पर पैसों के मामले में जल्दबाज़ी न करें।', best: ['May, Sep', 'मई, सितंबर'] },
+    6: { t: ['Year of Family & Responsibility', 'परिवार और ज़िम्मेदारी का साल'], en: 'Home, marriage, children and family duties come first. A beautiful year for weddings, home decor and healing relationships.', hi: 'घर, विवाह, संतान और पारिवारिक ज़िम्मेदारियाँ प्रमुख। शादी, घर सजाने और रिश्ते सुधारने के लिए सुंदर साल।', best: ['Jun, Oct', 'जून, अक्टूबर'] },
+    7: { t: ['Year of Wisdom & Spirituality', 'ज्ञान और आध्यात्म का साल'], en: 'Slow down and look within. Study, research, meditation and pilgrimage are blessed. Avoid big risky investments.', hi: 'धीमे चलें और भीतर झाँकें। अध्ययन, शोध, ध्यान और तीर्थयात्रा शुभ। बड़े जोखिम वाले निवेश से बचें।', best: ['Jul, Nov', 'जुलाई, नवंबर'] },
+    8: { t: ['Year of Money & Power', 'धन और शक्ति का साल'], en: 'Career growth, promotions and financial gains are possible through discipline. Stay honest — karma returns fast this year.', hi: 'अनुशासन से करियर में उन्नति, प्रमोशन और धन लाभ संभव। ईमानदार रहें — इस साल कर्म का फल जल्दी मिलता है।', best: ['Aug, Dec', 'अगस्त, दिसंबर'] },
+    9: { t: ['Year of Completion & Release', 'समापन और मुक्ति का साल'], en: 'A cycle ends. Finish pending work, let go of what no longer serves you, and help others. Clear the ground for a powerful new start.', hi: 'एक चक्र पूरा होता है। अधूरे काम पूरे करें, जो काम का नहीं उसे छोड़ें, दूसरों की मदद करें। नई शक्तिशाली शुरुआत की ज़मीन तैयार करें।', best: ['Sep, Mar', 'सितंबर, मार्च'] }
+  };
+  function personalYear(dob, year) { const [, m, d] = dob.split('-').map(Number); return dr(String(year) + String(m) + String(d)); }
+
+  return { dr, NUM, MISSING, PY_TXT, personalYear, numerology, nameNumber, numberCheck, DECK, SUITS, drawCards, seeded, GOCHAR, rashifal, COLORS, LAGNA_TXT, DASHA_TXT, GEM, MANTRA };
 });

@@ -270,10 +270,31 @@
       v.innerHTML = App.phead('🪐 ' + esc(f.name)) + '<div id="vk"></div>'; renderKundli($('#vk'), k); window.scrollTo(0, 0); });
   };
 
+  /* ================= VRAT CALENDAR ================= */
+  App.routes.vrat = function (v) {
+    let city = LS.get('as_city') || window.AS_CITIES.find(c => c.name === 'Mathura');
+    const kinds = [['all', '✨', 'All', 'सभी'], ['ekadashi', '🌿', 'Ekadashi', 'एकादशी'], ['purnima', '🌕', 'Purnima', 'पूर्णिमा'], ['amavasya', '🌑', 'Amavasya', 'अमावस्या'], ['pradosh', '🔱', 'Pradosh', 'प्रदोष'], ['shivratri', '🕉️', 'Shivratri', 'शिवरात्रि'], ['sankashti', '🐘', 'Chaturthi', 'चतुर्थी'], ['sankranti', '☀️', 'Sankranti', 'संक्रांति']];
+    let kind = 'all', list = [];
+    v.innerHTML = App.phead('🪔 ' + T('Vrat & Festival Calendar', 'व्रत व त्योहार कैलेंडर'), T('Ekadashi, Purnima, Amavasya, Pradosh, Shivratri, Chaturthi and Sankranti dates for the next 6 months — calculated for your city.', 'अगले 6 महीनों की एकादशी, पूर्णिमा, अमावस्या, प्रदोष, शिवरात्रि, चतुर्थी और संक्रांति — आपके शहर के अनुसार गणना।')) +
+      `<section class="sec-sm"><div class="wrap" style="max-width:900px"><div class="card"><label class="f">${T('City', 'शहर')}</label><div id="vPlace"></div><button class="btn btn-gold" style="margin-top:10px" id="vGo">${T('Show calendar', 'कैलेंडर देखें')}</button></div>
+      <div class="tabs" style="margin-top:18px">${kinds.map(k => `<button data-k="${k[0]}">${k[1]} ${T(k[2], k[3])}</button>`).join('')}</div><div id="vOut"></div>
+      <p class="tiny muted center">${T('Based on tithi at local sunrise (Udaya tithi). Some vrats (Pradosh, Sankashti) follow sunset / moonrise rules — confirm with your family purohit for rituals.', 'स्थानीय सूर्योदय की तिथि (उदया तिथि) पर आधारित। कुछ व्रत (प्रदोष, संकष्टी) सूर्यास्त / चंद्रोदय नियम से होते हैं — अनुष्ठान के लिए पुरोहित से पुष्टि करें।')}</p></div></section>`;
+    const gp = App.placeField($('#vPlace'), city);
+    const paint = () => { $$('.tabs button', v).forEach(b => b.classList.toggle('on', b.dataset.k === kind)); let month = '';
+      $('#vOut').innerHTML = `<div class="card">${list.filter(x => kind === 'all' || x.key === kind).map(x => { const d = new Date(x.date + 'T12:00:00'), mh = App.fmtDate(d, { day: undefined, month: 'long' }); const head = mh !== month ? `<h3 style="margin:16px 0 6px">${mh}</h3>` : ''; month = mh;
+        return head + `<div class="vrow"><span class="vd"><b>${d.getDate()}</b>${App.fmtDate(d, { day: undefined, year: undefined, month: undefined, weekday: 'short' })}</span><span>${x.ic} <b>${T(x.en, x.hi)}</b></span></div>`; }).join('') || '—'}</div>`; };
+    const show = () => { const c = gp() || city; city = c; LS.set('as_city', c); App.tz = c.tz; list = J().vratCalendar(App.todayKey(), 183, c.lat, c.lon, c.tz); log('panchang', { meta: { vrat: 1, city: c.name } }); paint(); };
+    $$('.tabs button', v).forEach(b => b.onclick = () => { kind = b.dataset.k; paint(); });
+    $('#vGo').onclick = show; show();
+  };
+
   /* ================= BLESSINGS ================= */
   App.routes.blessings = function (v) {
     v.innerHTML = App.phead('🙏 ' + T('Divine Blessings', 'दिव्य आशीर्वाद'), T('Open your heart and receive blessings. Then play a divine game for today\'s guidance.', 'हृदय खोलें और आशीर्वाद ग्रहण करें। फिर आज के मार्गदर्शन के लिए दिव्य गेम खेलें।')) +
       `<section class="sec"><div class="wrap"><div class="blessings">${[1, 2, 3, 4, 5, 6, 7].map(i => `<a href="images/blessing-${i}.jpg" target="_blank" rel="noopener"><img src="images/blessing-${i}.jpg" alt="${T('Blessing', 'आशीर्वाद')} ${i}" loading="lazy"></a>`).join('')}</div>
+      <div class="card grid g2" style="margin-top:30px;align-items:center;background:linear-gradient(160deg,#120b2e,#24164f);color:#fff;border:0">
+        <div class="center"><img src="https://i.pinimg.com/736x/65/20/f8/6520f84dd398620b95488c1f2f0426fb.jpg" alt="Shri Hanuman Ji" loading="lazy" style="max-width:280px;margin:0 auto;border-radius:20px;box-shadow:0 0 60px rgba(251,191,36,.35)"></div>
+        <div><h2 style="color:#fbbf24">${T('Strength, Devotion, Service', 'शक्ति, भक्ति, सेवा')}</h2><p>${T('Drawing inspiration from the unwavering devotion and immense strength of Shri Hanuman Ji, we strive to serve you with dedication and integrity. May his blessings remove obstacles from your path.', 'श्री हनुमान जी की अटूट भक्ति और अपार शक्ति से प्रेरणा लेकर हम पूरी निष्ठा और ईमानदारी से आपकी सेवा करते हैं। उनकी कृपा आपके मार्ग की बाधाएँ दूर करे।')}</p><p>${T('Astrology helps us understand the cosmic play, while faith and righteous action empower us to navigate it. Jai Shri Ram!', 'ज्योतिष हमें ब्रह्मांड की लीला समझाता है, और श्रद्धा व सत्कर्म उसमें आगे बढ़ने की शक्ति देते हैं। जय श्री राम!')}</p></div></div>
       <div class="games-banner" style="margin-top:30px;text-align:center"><h2>🔮 ${T('Divine Game Zone', 'दिव्य गेम ज़ोन')}</h2><p style="color:#fde68a">${T('Every game is free — play once a day and grow your streak!', 'हर गेम फ़्री है — रोज़ एक बार खेलें और स्ट्रीक बढ़ाएँ!')}</p><a class="btn btn-gold btn-lg" href="#/games">🎮 ${T('Play now', 'अभी खेलें')}</a></div></div></section>`;
   };
 })();

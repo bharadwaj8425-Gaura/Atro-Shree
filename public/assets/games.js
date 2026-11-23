@@ -18,14 +18,20 @@
     if (s.last !== day) { const y = new Date(); y.setDate(y.getDate() - 1); const yk = `${y.getFullYear()}-${String(y.getMonth() + 1).padStart(2, '0')}-${String(y.getDate()).padStart(2, '0')}`; s.n = s.last === yk ? s.n + 1 : 1; s.last = day; }
     s.pts = (s.pts || 0) + 10; s.games = (s.games || 0) + 1; LS.set('as_streak', s);
     const p = LS.get('as_played') || {}; p[game] = day; LS.set('as_played', p);
-    log('game', { meta: { game, streak: s.n } }); paintStreak();
+    log('game', { meta: { game, streak: s.n } });
+    const have = LS.get('as_coupons', []).map(c => c.code);
+    if (s.n >= 7 && !have.includes('SAPTAH21')) { App.winCoupon('SAPTAH21', 'streak7'); toast('🎉 ' + T('7-day streak! You unlocked coupon SAPTAH21 (₹21 off)', '7 दिन की स्ट्रीक! आपने SAPTAH21 कूपन (₹21 छूट) जीता'), 6000); }
+    else if (s.n >= 3 && !have.includes('SHUBH11')) { App.winCoupon('SHUBH11', 'streak3'); toast('🎉 ' + T('3-day streak! You unlocked coupon SHUBH11 (₹11 off)', '3 दिन की स्ट्रीक! आपने SHUBH11 कूपन (₹11 छूट) जीता'), 6000); }
+    paintStreak();
   }
   const playedToday = g => (LS.get('as_played') || {})[g] === App.todayKey();
   const BADGES = [[3, '🪔', 'Deepak', 'दीपक'], [7, '🌟', 'Tara', 'तारा'], [21, '👑', 'Raj Yogi', 'राजयोगी'], [51, '🕉️', 'Siddh', 'सिद्ध']];
   function paintStreak() {
     const s = LS.get('as_streak') || { n: 0, pts: 0 }, el = $('#gStreak'); if (!el) return;
     el.innerHTML = `<span class="streak">🔥 ${s.n} ${T('day streak', 'दिन की स्ट्रीक')}</span> <span class="streak">✨ ${s.pts || 0} ${T('punya points', 'पुण्य अंक')}</span>
-      <div class="badges" style="margin-top:12px">${BADGES.map(b => `<span class="badge ${s.n >= b[0] ? '' : 'off'}">${b[1]} ${T(b[2], b[3])} · ${b[0]} ${T('days', 'दिन')}</span>`).join('')}</div>`;
+      <div class="badges" style="margin-top:12px">${BADGES.map(b => `<span class="badge ${s.n >= b[0] ? '' : 'off'}">${b[1]} ${T(b[2], b[3])} · ${b[0]} ${T('days', 'दिन')}</span>`).join('')}</div>
+      <div class="badges" style="margin-top:8px;justify-content:center"><span class="badge ${s.n >= 3 ? '' : 'off'}">🎟️ 3 ${T('days', 'दिन')} → ₹11 ${T('off', 'छूट')}</span><span class="badge ${s.n >= 7 ? '' : 'off'}">🎟️ 7 ${T('days', 'दिन')} → ₹21 ${T('off', 'छूट')}</span><span class="badge">🎡 ${T('Wheel', 'पहिया')} → ₹11 ${T('off', 'छूट')}</span></div>
+      ${LS.get('as_coupons', []).length ? `<p style="color:#fde68a;margin-top:10px">🎟️ ${T('Your coupons', 'आपके कूपन')}: ${LS.get('as_coupons', []).map(c => `<b class="coupon">${esc(c.code)}</b>`).join(' ')} — <a href="#/seva" style="color:#fbbf24">${T('use now', 'अभी इस्तेमाल करें')}</a></p>` : ''}`;
   }
 
   /* ---------- game definitions ---------- */
@@ -47,7 +53,7 @@
   ];
   const MSG = {
     card: [['🕉️ Divine protection is around you today. Stay calm and trust your path.', '🕉️ आज दिव्य सुरक्षा आपके साथ है। शांत रहें और अपने मार्ग पर भरोसा रखें।'], ['🔱 Shiva energy supports your new beginning. Avoid anger and move wisely.', '🔱 शिव ऊर्जा आपकी नई शुरुआत में साथ है। क्रोध से बचें, समझदारी से बढ़ें।'], ['🌙 Your intuition is strong today. Listen to your inner voice.', '🌙 आज आपका अंतर्ज्ञान प्रबल है। भीतर की आवाज़ सुनें।'], ['✨ Good news may come soon. Keep your thoughts positive.', '✨ जल्द शुभ समाचार आ सकता है। विचार सकारात्मक रखें।'], ['💫 A blocked path will slowly open. Do not lose hope.', '💫 रुका हुआ रास्ता धीरे-धीरे खुलेगा। आशा न छोड़ें।'], ['🌸 Love, peace and blessings are entering your life.', '🌸 प्रेम, शांति और आशीर्वाद आपके जीवन में आ रहे हैं।']],
-    wheel: [['🍀 Lucky break', '🍀 शुभ अवसर'], ['💰 Money flow', '💰 धन लाभ'], ['❤️ Love blessing', '❤️ प्रेम आशीर्वाद'], ['🚀 New opportunity', '🚀 नया अवसर'], ['🧘 Inner peace', '🧘 मन की शांति'], ['🎉 Good news', '🎉 शुभ समाचार'], ['🛡️ Divine protection', '🛡️ दिव्य रक्षा'], ['📚 Wisdom', '📚 ज्ञान']],
+    wheel: [['🍀 Lucky break', '🍀 शुभ अवसर'], ['💰 Money flow', '💰 धन लाभ'], ['❤️ Love blessing', '❤️ प्रेम आशीर्वाद'], ['🚀 New opportunity', '🚀 नया अवसर'], ['🧘 Inner peace', '🧘 मन की शांति'], ['🎉 Good news', '🎉 शुभ समाचार'], ['🛡️ Divine protection', '🛡️ दिव्य रक्षा'], ['🎁 ₹11 OFF coupon', '🎁 ₹11 छूट कूपन']],
     color: [['Gold – success and divine blessings', 'सुनहरा – सफलता और दिव्य आशीर्वाद'], ['Red – courage and confidence', 'लाल – साहस और आत्मविश्वास'], ['Green – money and healing', 'हरा – धन और उपचार'], ['White – peace and purity', 'सफ़ेद – शांति और पवित्रता'], ['Purple – spiritual power', 'बैंगनी – आध्यात्मिक शक्ति'], ['Yellow – knowledge and luck', 'पीला – ज्ञान और भाग्य'], ['Pink – love and harmony', 'गुलाबी – प्रेम और सामंजस्य'], ['Blue – calm mind and protection', 'नीला – शांत मन और सुरक्षा']],
     oracle: [['✅ Yes, the energy is positive.', '✅ हाँ, ऊर्जा सकारात्मक है।'], ['❌ Not right now. Wait for better timing.', '❌ अभी नहीं। बेहतर समय की प्रतीक्षा करें।'], ['🌙 Maybe. Trust your intuition.', '🌙 शायद। अपने अंतर्ज्ञान पर भरोसा करें।'], ['✨ Yes, but move slowly and wisely.', '✨ हाँ, पर धीरे और समझदारी से।'], ['🔱 No, first clear your doubts.', '🔱 नहीं, पहले अपनी शंकाएँ दूर करें।'], ['🙏 Divine timing is working. Be patient.', '🙏 दिव्य समय काम कर रहा है। धैर्य रखें।']],
     angel: [['111 – New beginnings are coming.', '111 – नई शुरुआत आ रही है।'], ['222 – Balance and patience are needed.', '222 – संतुलन और धैर्य चाहिए।'], ['333 – Divine support is with you.', '333 – दिव्य सहायता आपके साथ है।'], ['444 – You are protected by higher energy.', '444 – उच्च ऊर्जा आपकी रक्षा कर रही है।'], ['555 – Big change is coming soon.', '555 – बड़ा बदलाव जल्द आ रहा है।'], ['777 – Spiritual luck is active.', '777 – आध्यात्मिक भाग्य सक्रिय है।'], ['888 – Money energy is improving.', '888 – धन ऊर्जा बढ़ रही है।'], ['999 – Old cycle is ending. New path begins.', '999 – पुराना चक्र समाप्त, नया मार्ग शुरू।']],
@@ -77,7 +83,9 @@
       case 'wheel': {
         area.innerHTML = `<div class="wheel-game"><span class="ptr">🔻</span>${wheelSvg()}</div><button class="btn btn-gold btn-block" id="spin">🎡 ${T('Spin!', 'घुमाएँ!')}</button>`;
         $('#spin', area).onclick = () => { const i = Math.floor(Math.random() * 8), svg = $('svg', area), deg = 360 * 6 + (360 - (i + .5) * 45); svg.style.transform = `rotate(${deg}deg)`; $('#spin', area).disabled = true;
-          setTimeout(() => done(`🎡 ${T('Your blessing today', 'आज आपका आशीर्वाद')}:<br><span style="font-size:1.5rem">${tx(MSG.wheel[i])}</span><br><span class="small">${tx(pick(MSG.destiny))}</span>`), 4200); }; return; }
+          setTimeout(() => { if (i === 7) App.winCoupon('SHUBH11', 'wheel');
+            done(i === 7 ? `🎉 ${T('You won a coupon!', 'आपने कूपन जीता!')}<br><span class="coupon" style="font-size:1.4rem">SHUBH11</span><br><span class="small">₹11 ${T('off on any reading — auto-applied when you book', 'किसी भी रीडिंग पर छूट — बुकिंग में अपने-आप लगेगा')}</span><br><a class="btn btn-gold btn-sm" style="margin-top:8px" href="#/seva">${T('Use now', 'अभी इस्तेमाल करें')}</a>`
+              : `🎡 ${T('Your blessing today', 'आज आपका आशीर्वाद')}:<br><span style="font-size:1.5rem">${tx(MSG.wheel[i])}</span><br><span class="small">${tx(pick(MSG.destiny))}</span>`); }, 4200); }; return; }
       case 'card':
         area.innerHTML = `<div class="pick-grid">${['🕉️', '🔱', '🌙', '✨', '💫', '🌸'].map((e, i) => `<button data-i="${i}">${e}</button>`).join('')}</div>`;
         $$('[data-i]', area).forEach(b => b.onclick = () => done(tx(MSG.card[+b.dataset.i]))); return;
@@ -107,7 +115,7 @@
   App.routes.games = function (v) {
     v.innerHTML = `<section class="hero" style="min-height:auto"><canvas id="stars"></canvas><div class="wrap" style="display:block;min-height:auto;padding:44px 18px;text-align:center">
       <span class="kicker" style="color:#fbbf24">🎮 ${T('Free · daily · fun', 'फ़्री · रोज़ · मज़ेदार')}</span><h1>${T('Divine Game Zone', 'दिव्य गेम ज़ोन')}</h1>
-      <p class="lead" style="margin:0 auto">${T('14 spiritual games. Each can be played once a day — keep your streak alive to unlock badges and earn punya points!', '14 आध्यात्मिक गेम्स। हर गेम दिन में एक बार — स्ट्रीक बनाए रखें, बैज जीतें और पुण्य अंक कमाएँ!')}</p>
+      <p class="lead" style="margin:0 auto">${T('14 spiritual games, once a day each. Keep your streak alive to unlock badges and win discount coupons!', '14 आध्यात्मिक गेम्स, हर गेम दिन में एक बार। स्ट्रीक बनाए रखें, बैज और छूट कूपन जीतें!')}</p>
       <div id="gStreak" style="margin-top:18px;display:flex;flex-direction:column;align-items:center"></div></div></section>
       <section class="sec"><div class="wrap"><div class="grid g3">${G.map(g => `<div class="card game" style="border-top:5px solid ${g.c}">${playedToday(g.id) && !g.unlimited ? `<span class="pill g done">✓ ${T('Played', 'खेला')}</span>` : ''}
         <div style="font-size:2.4rem">${g.ic}</div><h3 style="margin-top:6px">${T(g.en, g.hi)}</h3><p class="muted small">${T(g.d[0], g.d[1])}</p><div class="area" data-g="${g.id}"><button class="btn btn-gold btn-sm" data-play="${g.id}">${T('Play', 'खेलें')} ▶</button></div></div>`).join('')}</div>

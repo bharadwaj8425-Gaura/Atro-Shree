@@ -1,0 +1,12 @@
+{
+  "name": "astro-shree",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Astro-Shree — Vedic astrology, numerology & tarot by Manasvi Bharadwaj: free kundli, panchang, gun milan, games, AI Jyotish, UPI bookings, admin.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/engine.test.cjs"
+  },
+  "engines": { "node": ">=18" }
+}

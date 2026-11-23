@@ -10,7 +10,7 @@
   const WA = '918484013977', PHONE = '+91 84840 13977', INSTA = 'https://www.instagram.com/astro_shree25_/';
   const DEFAULT_UPI = { id: '8484013977@ybl', name: 'Astro Shree' }; // PhonePe UPI ID
   const waLink = text => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
-  const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+  const todayKey = () => { try { return new Date().toLocaleDateString('en-CA', { timeZone: (window.App && App.tz) || 'Asia/Kolkata' }); } catch (e) { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; } }; // date in the user's city (IST by default)
   const fmtTime = d => d ? d.toLocaleTimeString(lang === 'hi' ? 'hi-IN' : 'en-IN', { hour: '2-digit', minute: '2-digit', timeZone: App.tz || 'Asia/Kolkata' }) : '—';
   const fmtDate = (d, o) => d ? d.toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', Object.assign({ day: 'numeric', month: 'short', year: 'numeric', timeZone: App.tz || 'Asia/Kolkata' }, o || {})) : '—';
   function toast(msg, ms) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3200); }

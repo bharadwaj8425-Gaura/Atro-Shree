@@ -193,7 +193,7 @@ footer{background:#0b0720;color:#c4b5fd;padding:50px 0 24px;font-size:.9rem}foot
 .offerbar button{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;font-size:16px}
 .mrp{color:#9ca3af;font-size:.6em;font-weight:500}.offtag{display:inline-block;font-size:.42em;vertical-align:middle;background:#dcfce7;color:#166534;border-radius:999px;padding:3px 8px;font-family:var(--fb);font-weight:800}
 .hero2 .wrap{min-height:auto;padding-top:46px;padding-bottom:10px}
-.hero2 .hero-txt h1{font-size:clamp(2.3rem,5.4vw,4.2rem)}
+.hero2 .hero-txt h1{font-size:clamp(2.2rem,4.6vw,3.6rem)}
 .hero-cta{margin-top:22px}.hero-offer{display:inline-block;margin-top:18px;color:#fde68a;text-decoration:none;border:1px dashed rgba(251,191,36,.6);border-radius:14px;padding:8px 14px;font-size:.92rem;background:rgba(251,191,36,.08)}
 .hero-art{display:grid;place-items:center}
 .orb{position:relative;width:min(440px,86vw);aspect-ratio:1;display:grid;place-items:center}

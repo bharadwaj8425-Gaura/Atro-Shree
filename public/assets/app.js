@@ -138,7 +138,7 @@
       <div><b>${st && st.kundli ? (st.kundli + 100).toLocaleString('en-IN') + '+' : '27'}</b>${st && st.kundli ? T('Kundlis made here', 'कुंडलियाँ बनीं') : T('Nakshatras decoded', 'नक्षत्रों का ज्ञान')}</div>
       <div><b>5+</b>${T('Years of Manasvi ji\'s practice', 'वर्षों का अनुभव')}</div><div><b>12+</b>${T('Free divine games', 'फ़्री दिव्य गेम्स')}</div><div><b>₹51</b>${T('Personal reading starts', 'से व्यक्तिगत रीडिंग')}</div></div></section>
 
-    <section class="sec"><div class="wrap center"><span class="kicker">${T('100% free tools', '100% फ़्री टूल्स')}</span><h2 class="title">${T('Everything AstroSage has — and more', 'सब कुछ एक ही जगह — और भी ज़्यादा')}</h2>
+    <section class="sec"><div class="wrap center"><span class="kicker">${T('100% free tools', '100% फ़्री टूल्स')}</span><h2 class="title">${T('All your astrology tools — in one place', 'ज्योतिष के सारे टूल्स — एक ही जगह')}</h2>
       <p class="sub">${T('Accurate Lahiri-ayanamsa calculations, in Hindi and English, no sign-up needed.', 'लाहिड़ी अयनांश की सटीक गणना, हिंदी और अंग्रेज़ी में, बिना साइन-अप।')}</p>
       <div class="grid g4" style="text-align:left">${[
         ['kundli', '🪐', 'Janam Kundli', 'जन्म कुंडली', 'Lagna & Navamsa chart, planets, Vimshottari dasha, Manglik', 'लग्न व नवांश चार्ट, ग्रह, विंशोत्तरी दशा, मांगलिक'],

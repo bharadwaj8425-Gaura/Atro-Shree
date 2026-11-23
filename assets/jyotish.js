@@ -314,13 +314,13 @@
     const lagnaSign = useNav ? k.lagna.navamsa : k.lagna.sign;
     const byHouse = Array.from({ length: 12 }, () => []);
     k.planets.forEach(p => { const s = useNav ? p.navamsa : p.sign; byHouse[(s - lagnaSign + 12) % 12].push(p); });
-    const stroke = opt.stroke || '#b45309';
+    const stroke = opt.stroke || '#7c3aed';
     let s = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="kchart" role="img" aria-label="${useNav ? 'Navamsa' : 'Lagna'} chart">`;
-    s += `<rect x="2" y="2" width="396" height="396" rx="10" fill="${opt.bg || '#fffaf0'}" stroke="${stroke}" stroke-width="3"/>`;
+    s += `<rect x="2" y="2" width="396" height="396" rx="10" fill="${opt.bg || '#fbf8ff'}" stroke="${stroke}" stroke-width="3"/>`;
     s += `<path d="M2 2L398 398M398 2L2 398M200 2L398 200L200 398L2 200Z" fill="none" stroke="${stroke}" stroke-width="2"/>`;
     for (let h = 0; h < 12; h++) {
       const sign = (lagnaSign + h) % 12, [sx, sy] = SIGN_XY[h];
-      s += `<text x="${sx}" y="${sy}" font-size="13" fill="#9a3412" text-anchor="middle" dominant-baseline="middle" font-weight="700">${sign + 1}</text>`;
+      s += `<text x="${sx}" y="${sy}" font-size="13" fill="#b45309" text-anchor="middle" dominant-baseline="middle" font-weight="700">${sign + 1}</text>`;
       const items = byHouse[h].map(p => (hi ? PLANETS[p.name].abh : PLANETS[p.name].ab) + (p.retro && p.name !== 'Rahu' && p.name !== 'Ketu' ? '*' : ''));
       if (h === 0) items.unshift(hi ? 'लग्न' : 'Asc');
       const [x, y] = HOUSE_XY[h], per = 3, rows = Math.ceil(items.length / per);

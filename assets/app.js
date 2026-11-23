@@ -47,9 +47,9 @@
 
   /* ---------------- layout ---------------- */
   const NAV = [['', '🏠', 'Home', 'होम'], ['kundli', '🪐', 'Kundli', 'कुंडली'], ['milan', '💞', 'Milan', 'मिलान'], ['panchang', '📅', 'Panchang', 'पंचांग'], ['rashifal', '♈', 'Rashifal', 'राशिफल'],
-    ['numerology', '🔢', 'Numerology', 'अंक ज्योतिष'], ['tarot', '🃏', 'Tarot', 'टैरो'], ['games', '🎮', 'Games', 'गेम्स'], ['chat', '🤖', 'Shree AI', 'श्री AI'], ['seva', '🙏', 'Book', 'बुक करें', 'hot']];
+    ['numerology', '🔢', 'Numerology', 'अंक ज्योतिष'], ['tarot', '🃏', 'Tarot', 'टैरो'], ['games', '🎮', 'Games', 'गेम्स'], ['chat', '🤖', 'Shree AI', 'श्री AI'], ['my', '📜', 'My Reports', 'मेरी रिपोर्ट'], ['seva', '🙏', 'Book', 'बुक करें', 'hot']];
   function renderChrome(route) {
-    $('#menu').innerHTML = NAV.map(n => `<a href="#/${n[0]}" class="${n[4] || ''} ${route === n[0] ? 'on' : ''}">${n[1]} ${T(n[2], n[3])}</a>`).join('');
+    $('#menu').innerHTML = NAV.map(n => `<a href="#/${n[0]}" class="${n[4] || ''} ${route === n[0] ? 'on' : ''}"><span class="ne">${n[1]} </span>${T(n[2], n[3])}</a>`).join('');
     $('#langBtn').textContent = lang === 'hi' ? 'English' : 'हिंदी';
     document.documentElement.lang = lang; document.body.classList.toggle('hi', lang === 'hi'); if (App.offerBar) App.offerBar();
     $('#foot').innerHTML = `<div class="grid g4">
@@ -58,7 +58,7 @@
       <div><h4>${T('Free Tools', 'फ़्री टूल्स')}</h4><a href="#/kundli">${T('Janam Kundli', 'जन्म कुंडली')}</a><a href="#/milan">${T('Kundli Milan', 'कुंडली मिलान')}</a><a href="#/panchang">${T('Aaj ka Panchang', 'आज का पंचांग')}</a><a href="#/rashifal">${T('Daily Rashifal', 'दैनिक राशिफल')}</a><a href="#/numerology">${T('Numerology', 'अंक ज्योतिष')}</a><a href="#/tarot">${T('Tarot', 'टैरो')}</a></div>
       <div><h4>${T('Explore', 'और देखें')}</h4><a href="#/games">🎮 ${T('Divine Games', 'दिव्य गेम्स')}</a><a href="#/chat">🤖 Shree AI</a><a href="#/vault">👨‍👩‍👧 ${T('Family Kundli Vault', 'परिवार कुंडली तिजोरी')}</a><a href="#/vrat">🪔 ${T('Vrat Calendar', 'व्रत कैलेंडर')}</a><a href="#/blessings">🙏 ${T('Divine Blessings', 'दिव्य आशीर्वाद')}</a><a href="#/seva">💎 ${T('Book a Reading', 'रीडिंग बुक करें')}</a></div>
       <div><h4>${T('Policies', 'नीतियाँ')}</h4><a href="#/privacy">${T('Privacy Policy', 'गोपनीयता नीति')}</a><a href="#/terms">${T('Terms & Refund', 'नियम व रिफ़ंड')}</a><a href="#/seva">${T('Pricing', 'मूल्य')}</a></div></div>
-      <div class="disc">© ${new Date().getFullYear()} Astro-Shree — Manasvi Bharadwaj. ${T('Astrology, numerology and tarot offer guidance based on traditional principles; results vary from person to person and are not guaranteed. They do not replace medical, legal or financial advice. Games are for entertainment.', 'ज्योतिष, अंक ज्योतिष और टैरो पारंपरिक सिद्धांतों पर आधारित मार्गदर्शन हैं; परिणाम व्यक्ति अनुसार अलग हो सकते हैं और गारंटी नहीं है। ये चिकित्सा, कानूनी या आर्थिक सलाह का विकल्प नहीं हैं। गेम्स केवल मनोरंजन हेतु हैं।')}</div>`;
+      <div class="disc">© ${new Date().getFullYear()} Astro Shree — Manasvi Bharadwaj. ${T('Astrology, numerology and tarot offer guidance based on traditional principles; results vary from person to person and are not guaranteed. They do not replace medical, legal or financial advice. Games are for entertainment.', 'ज्योतिष, अंक ज्योतिष और टैरो पारंपरिक सिद्धांतों पर आधारित मार्गदर्शन हैं; परिणाम व्यक्ति अनुसार अलग हो सकते हैं और गारंटी नहीं है। ये चिकित्सा, कानूनी या आर्थिक सलाह का विकल्प नहीं हैं। गेम्स केवल मनोरंजन हेतु हैं।')}</div>`;
   }
   App.phead = (title, sub) => `<section class="phead"><div class="wrap"><h1>${title}</h1>${sub ? `<p>${sub}</p>` : ''}</div></section>`;
   App.ctaBook = (id, line) => { const s = SERVICES.find(x => x.id === id); return `<div class="cta-box no-print"><div><h3>${s.ic} ${T(s.en, s.hi)} — ${App.priceHTML(id)}</h3><div class="small" style="color:#ddd6fe">${line || T(s.time[0], s.time[1])}</div></div><button class="btn btn-gold" data-book="${id}">${T('Book now', 'अभी बुक करें')} →</button></div>`; };
@@ -205,7 +205,7 @@
       <div class="grid g3" style="text-align:left">${['prashn', 'call', 'sampoorna'].map(svcCard).join('')}</div>
       <a class="btn btn-violet" style="margin-top:22px" href="#/seva">${T('See all 11 services', 'सभी 11 सेवाएँ देखें')} →</a></div></section>
 
-    <section class="sec" style="background:#fff7ed"><div class="wrap about2"><img src="images/logo.svg" alt="" class="about-emblem">
+    <section class="sec" style="background:var(--bg2)"><div class="wrap about2"><img src="images/logo.svg" alt="" class="about-emblem">
       <div><span class="kicker">${T('About Astro-Shree', 'एस्ट्रो-श्री के बारे में')}</span><h2 class="title">${T('Guided by Manasvi Bharadwaj', 'मानसवी भारद्वाज द्वारा मार्गदर्शन')}</h2>
       <p>${T('5 years of Vedic astrology practice — Kundli, Kundali Matching, Numerology, Tarot, past analysis and future predictions. An ethical, compassionate approach that helps you understand your karma and make informed choices.', '5 वर्षों का वैदिक ज्योतिष अनुभव — कुंडली, कुंडली मिलान, अंक ज्योतिष, टैरो, भूतकाल विश्लेषण और भविष्यवाणी। नैतिक और करुणामय दृष्टिकोण जो आपको अपने कर्म को समझने और सही निर्णय लेने में मदद करता है।')}</p>
       <div class="row"><button class="btn btn-gold" data-book="call">📞 ${T('Book a call', 'कॉल बुक करें')}</button><a class="btn btn-ghost" href="${INSTA}" target="_blank" rel="noopener">📸 Instagram</a><a class="btn btn-ghost" href="#/blessings">🙏 ${T('Divine Blessings', 'दिव्य आशीर्वाद')}</a></div></div></div></section>
@@ -225,7 +225,7 @@
         <label class="f">${T('Your words', 'आपके शब्द')}</label><textarea class="inp" id="rvText" rows="3"></textarea>
         <button class="btn btn-violet" style="margin-top:12px" id="rvSend">${T('Submit review', 'समीक्षा भेजें')}</button><p class="tiny muted">${T('Reviews appear after a quick check.', 'जाँच के बाद समीक्षा दिखेगी।')}</p></details></div></section>
 
-    <section class="sec" style="background:#fff7ed"><div class="wrap faq" style="max-width:820px"><div class="center"><h2 class="title">❓ ${T('Common questions', 'आम सवाल')}</h2></div>
+    <section class="sec" style="background:var(--bg2)"><div class="wrap faq" style="max-width:820px"><div class="center"><h2 class="title">❓ ${T('Common questions', 'आम सवाल')}</h2></div>
       ${[['How accurate is the free kundli?', 'फ़्री कुंडली कितनी सटीक है?', 'Planet positions use a modern astronomical engine with Lahiri ayanamsa — the standard of Indian panchangs. Accuracy depends most on your exact birth time.', 'ग्रहों की गणना आधुनिक खगोलीय इंजन और लाहिड़ी अयनांश से होती है — भारतीय पंचांगों का मानक। सटीकता सबसे ज़्यादा सही जन्म समय पर निर्भर है।'],
         ['How do I pay and use a coupon?', 'भुगतान और कूपन कैसे इस्तेमाल करें?', 'Choose a service, enter your coupon (e.g. SHUBH11) in the booking form, scan the UPI QR, then upload the screenshot with the UTR number. You get confirmation on WhatsApp.', 'सेवा चुनें, बुकिंग फ़ॉर्म में कूपन (जैसे SHUBH11) डालें, UPI QR स्कैन करें, फिर UTR नंबर के साथ स्क्रीनशॉट अपलोड करें। WhatsApp पर पुष्टि मिलेगी।'],
         ['Is my data safe?', 'क्या मेरा डेटा सुरक्षित है?', 'Your birth details stay in your browser unless you choose to save or book. We never sell your data.', 'आपका जन्म विवरण आपके ब्राउज़र में ही रहता है, जब तक आप सेव या बुक न करें। हम डेटा कभी नहीं बेचते।']
@@ -285,7 +285,7 @@
     const cats = [['all', '✨', 'All', 'सभी'], ['jyotish', '🪐', 'Jyotish', 'ज्योतिष'], ['numerology', '🔢', 'Numerology', 'अंक ज्योतिष'], ['tarot', '🃏', 'Tarot', 'टैरो'], ['combo', '👑', 'Combo', 'कॉम्बो']];
     let cat = rest[0] && cats.some(c => c[0] === rest[0]) ? rest[0] : 'all';
     v.innerHTML = App.phead('🙏 ' + T('Jyotish Seva — Book a Reading', 'ज्योतिष सेवा — रीडिंग बुक करें'), T('Personal readings by Manasvi Bharadwaj. Pay by any UPI app — GPay, PhonePe, Paytm, BHIM.', 'मानसवी भारद्वाज द्वारा व्यक्तिगत रीडिंग। किसी भी UPI ऐप से भुगतान — GPay, PhonePe, Paytm, BHIM।')) +
-      (App.offer().active ? `<div class="wrap" style="margin-top:20px"><div class="cta-box" style="background:linear-gradient(90deg,#9f1239,#f97316)"><div><h3>🎉 ${T(App.offer().name, 'लॉन्च ऑफ़र')}: ${App.offer().pct}% OFF ${T('on every reading', 'हर रीडिंग पर')}</h3><div class="small">${T('Ends in', 'समाप्ति में')} ${App.daysLeft()} ${T('days', 'दिन')} · ${T('Have a coupon from games? Apply it while booking.', 'गेम्स से कूपन मिला है? बुकिंग में लगाएँ।')}</div></div><a class="btn btn-gold" href="#/games">🎡 ${T('Win a coupon', 'कूपन जीतें')}</a></div></div>` : '') +
+      (App.offer().active ? `<div class="wrap" style="margin-top:20px"><div class="cta-box" style="background:linear-gradient(90deg,#3b0764,#6d28d9 60%,#d97706)"><div><h3>🎉 ${T(App.offer().name, 'लॉन्च ऑफ़र')}: ${App.offer().pct}% OFF ${T('on every reading', 'हर रीडिंग पर')}</h3><div class="small">${T('Ends in', 'समाप्ति में')} ${App.daysLeft()} ${T('days', 'दिन')} · ${T('Have a coupon from games? Apply it while booking.', 'गेम्स से कूपन मिला है? बुकिंग में लगाएँ।')}</div></div><a class="btn btn-gold" href="#/games">🎡 ${T('Win a coupon', 'कूपन जीतें')}</a></div></div>` : '') +
       `<section class="sec"><div class="wrap"><div class="tabs">${cats.map(c => `<button data-c="${c[0]}">${c[1]} ${T(c[2], c[3])}</button>`).join('')}</div><div class="grid g3" id="svcs"></div>
       <div class="card" style="margin-top:28px"><h3>🛡️ ${T('How booking works', 'बुकिंग कैसे होती है')}</h3><ol class="steps"><li>${T('Choose a service and fill your details (birth details help a lot).', 'सेवा चुनें और अपनी जानकारी भरें (जन्म विवरण बहुत मदद करता है)।')}</li><li>${T('Scan the UPI QR or tap "Pay" on your phone — exact amount is pre-filled.', 'UPI QR स्कैन करें या फ़ोन पर "Pay" दबाएँ — सही राशि पहले से भरी होती है।')}</li><li>${T('Upload the payment screenshot with the 12-digit UTR. It is checked instantly.', '12-अंकीय UTR के साथ भुगतान स्क्रीनशॉट अपलोड करें। तुरंत जाँच होती है।')}</li><li>${T('Manasvi ji contacts you on WhatsApp with your reading or call slot.', 'मानसवी जी WhatsApp पर रीडिंग या कॉल का समय भेजती हैं।')}</li></ol>
       <p class="small muted">${T('Need help? ', 'मदद चाहिए? ')}<a href="${waLink('Radhe Radhe 🙏 I need help with booking')}" target="_blank" rel="noopener">WhatsApp ${PHONE}</a> · <a href="#/terms">${T('Refund policy', 'रिफ़ंड नीति')}</a></p></div></div></section>`;
@@ -362,7 +362,7 @@
     $('#saveQr', m.el).onclick = () => { // render QR + amount on a canvas → PNG, so it can be scanned from the gallery in any UPI app
       const svg = $('.upi-qr svg', m.el), img = new Image(), url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' }));
       img.onload = () => { const c = document.createElement('canvas'); c.width = 600; c.height = 760; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 600, 760); x.drawImage(img, 60, 120, 480, 480);
-        x.fillStyle = '#1e1446'; x.font = 'bold 40px sans-serif'; x.textAlign = 'center'; x.fillText('Astro-Shree', 300, 70); x.font = 'bold 44px sans-serif'; x.fillStyle = '#9f1239'; x.fillText('₹' + price, 300, 660); x.font = '24px sans-serif'; x.fillStyle = '#444'; x.fillText(up.id + ' · GPay / PhonePe / Paytm', 300, 710);
+        x.fillStyle = '#1e1446'; x.font = 'bold 40px sans-serif'; x.textAlign = 'center'; x.fillText('Astro Shree', 300, 70); x.font = 'bold 44px sans-serif'; x.fillStyle = '#5b21b6'; x.fillText('₹' + price, 300, 660); x.font = '24px sans-serif'; x.fillStyle = '#444'; x.fillText(up.id + ' · GPay / PhonePe / Paytm', 300, 710);
         URL.revokeObjectURL(url); c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `AstroShree-UPI-${price}.png`; a.click(); toast(T('QR saved — open your UPI app → Scan → Gallery', 'QR सेव हुआ — UPI ऐप खोलें → स्कैन → गैलरी')); }); };
       img.src = url; };
     let shot = null;
@@ -381,11 +381,24 @@
           m.el.innerHTML = `<p>${T('Send your payment details to Manasvi ji on WhatsApp and attach the screenshot.', 'भुगतान विवरण WhatsApp पर मानसवी जी को भेजें और स्क्रीनशॉट लगाएँ।')}</p><a class="btn btn-green btn-lg btn-block" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Send on WhatsApp', 'WhatsApp पर भेजें')}</a>`; return; }
         if (!r.ok) throw new Error(j.error || 'Error');
         LS.set('as_bookings', (LS.get('as_bookings') || []).concat([{ id: j.booking, order: j.order_id, claim: j.claim, svc: s.id, t: Date.now() }]).slice(-20));
-        const ok = j.status === 'paid', msg = `Radhe Radhe 🙏 I booked "${s.en}" (₹${price}). Booking #${j.booking}, UTR ${utr}. Name: ${who.name}`;
-        m.setTitle(ok ? '✅ ' + T('Booking confirmed!', 'बुकिंग कन्फ़र्म!') : '⏳ ' + T('Booking received', 'बुकिंग प्राप्त हुई'));
-        m.el.innerHTML = `<div class="center"><div style="font-size:3.4rem">${ok ? '🎉' : '🙏'}</div><h3>${T('Booking', 'बुकिंग')} #${esc(j.booking)}</h3>
-          <p>${ok ? T('Your payment is verified. Manasvi ji will contact you on WhatsApp soon.', 'आपका भुगतान सत्यापित हो गया। मानसवी जी जल्द WhatsApp पर संपर्क करेंगी।') : T('We received your booking. Your payment will be verified shortly (usually within a few hours) and you will hear from us on WhatsApp.', 'आपकी बुकिंग मिल गई। भुगतान जल्द सत्यापित होगा (आमतौर पर कुछ घंटों में) और आपको WhatsApp पर सूचना मिलेगी।')}</p>
-          <a class="btn btn-green btn-lg btn-block" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Message Manasvi ji on WhatsApp', 'WhatsApp पर मानसवी जी को संदेश भेजें')}</a></div>`;
+        if (j.token) App.addToken(j.token, j.unlocks, j.booking);
+        const msg = `Radhe Radhe 🙏 I booked "${s.en}" (₹${price}). Booking #${j.booking}, UTR ${utr}. Name: ${who.name}`;
+        const show = (ok) => {
+          m.setTitle(ok ? '✅ ' + T('Booking confirmed!', 'बुकिंग कन्फ़र्म!') : '⏳ ' + T('Booking received', 'बुकिंग प्राप्त हुई'));
+          m.el.innerHTML = `<div class="center"><div style="font-size:3.4rem">${ok ? '🎉' : '🙏'}</div><h3>${T('Booking', 'बुकिंग')} #${esc(j.booking)}</h3>
+            <p>${ok ? T('Payment verified! Your Premium Report is unlocked right now, and Manasvi ji will contact you on WhatsApp soon.', 'भुगतान सत्यापित! आपकी प्रीमियम रिपोर्ट अभी खुल गई है, और मानसवी जी जल्द WhatsApp पर संपर्क करेंगी।') : T('We received your booking. Your payment is being verified — this page unlocks your Premium Report automatically as soon as it is approved.', 'बुकिंग मिल गई। भुगतान की जाँच हो रही है — स्वीकृत होते ही आपकी प्रीमियम रिपोर्ट अपने-आप खुल जाएगी।')}</p>
+            ${ok ? `<a class="btn btn-gold btn-lg btn-block" href="#/my" id="goMy">📜 ${T('Open my Premium Report', 'मेरी प्रीमियम रिपोर्ट खोलें')}</a>` : `<div class="small muted"><span class="loading"></span> ${T('Waiting for approval…', 'स्वीकृति की प्रतीक्षा…')}</div>`}
+            <a class="btn btn-green btn-block" style="margin-top:10px" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Message Manasvi ji on WhatsApp', 'WhatsApp पर मानसवी जी को संदेश भेजें')}</a></div>`;
+          const g = $('#goMy', m.el); if (g) g.onclick = () => m.close();
+        };
+        show(j.status === 'paid');
+        if (j.status !== 'paid') { // poll until the admin approves (or the modal is closed)
+          const poll = setInterval(async () => {
+            if (!m.el.isConnected) return clearInterval(poll);
+            try { const r2 = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_status', order_id: j.order_id, claim: j.claim }) }); const s2 = await r2.json();
+              if (s2.token) { App.addToken(s2.token, s2.unlocks, s2.booking); clearInterval(poll); show(true); } else if (s2.status === 'rejected') { clearInterval(poll); m.el.querySelector('.small').innerHTML = '❌ ' + T('Payment could not be verified. Please WhatsApp us with the screenshot.', 'भुगतान सत्यापित नहीं हो सका। कृपया स्क्रीनशॉट के साथ WhatsApp करें।'); } } catch (e) { }
+          }, 15000);
+        }
       } catch (e) { btn.disabled = false; btn.textContent = T('I have paid — confirm booking', 'मैंने भुगतान कर दिया — बुकिंग कन्फ़र्म करें'); toast(e.message, 5000); }
     };
   }

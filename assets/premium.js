@@ -19,7 +19,7 @@
   App.checkPending = async function (silent) {
     const list = LS.get('as_bookings', []), have = new Set(App.tokens().map(t => t.booking)); let got = 0;
     for (const bk of list.filter(b => b.order && b.claim && !have.has(b.id) && Date.now() - b.t < 30 * 864e5).slice(-5)) {
-      try { const r = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_status', order_id: bk.order, claim: bk.claim }) });
+      try { const r = await fetch(AS_API + '/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_status', order_id: bk.order, claim: bk.claim }) });
         const j = await r.json(); if (j && j.token) { App.addToken(j.token, j.unlocks, j.booking); got++; } } catch (e) { }
     }
     if (got && !silent) toast('🎉 ' + T('Payment approved! Your Premium Report is unlocked — open "My Reports".', 'भुगतान स्वीकृत! आपकी प्रीमियम रिपोर्ट खुल गई — "मेरी रिपोर्ट" खोलें।'), 6000);
@@ -56,7 +56,7 @@
     const token = App.tokenFor(type); if (!token) return;
     out.innerHTML = `<div class="card center"><span class="loading"></span> ${T('Creating your Premium Report… (30–60 seconds)', 'आपकी प्रीमियम रिपोर्ट बन रही है… (30–60 सेकंड)')}</div>`; out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     try {
-      const r = await fetch('/api/report', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type, token, data, lang: App.lang, visitor_id: App.vid }) });
+      const r = await fetch(AS_API + '/api/report', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ type, token, data, lang: App.lang, visitor_id: App.vid }) });
       const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Error');
       const rep = { type, text: j.text, at: Date.now(), title: data && (data.name || data.question) || '' };
       LS.set('as_reports', [rep].concat(LS.get('as_reports', [])).slice(0, 12)); if (App._paintSaved) App._paintSaved(); log('lead', { meta: { premium_report_view: type } });
@@ -108,7 +108,7 @@
     const paintSaved = () => { const s = LS.get('as_reports', []); $('#mySaved').innerHTML = s.length ? s.map((r, i) => `<div class="vrow"><span>${TYPES[r.type].ic}</span><span style="flex:1">${T(TYPES[r.type].en, TYPES[r.type].hi)}${r.title ? ' · ' + esc(r.title).slice(0, 40) : ''}<div class="tiny muted">${App.fmtDate(new Date(r.at))}</div></span><button class="btn btn-ghost btn-sm" data-open="${i}">${T('Open', 'खोलें')}</button></div>`).join('') : `<p class="muted small">${T('No reports yet.', 'अभी कोई रिपोर्ट नहीं।')}</p>`;
       $$('[data-open]', v).forEach(b => b.onclick = () => { showReport($('#myOut'), s[+b.dataset.open]); $('#myOut').scrollIntoView({ behavior: 'smooth' }); }); };
     $('#rsGo').onclick = async () => {
-      try { const r = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'restore', phone: $('#rsPhone').value, utr: $('#rsUtr').value }) }); const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Error');
+      try { const r = await fetch(AS_API + '/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'restore', phone: $('#rsPhone').value, utr: $('#rsUtr').value }) }); const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Error');
         App.addToken(j.token, j.unlocks, j.booking); toast('✅ ' + T('Access restored!', 'एक्सेस वापस मिल गया!')); paintCards(); } catch (e) { toast(e.message, 5000); }
     };
     App._paintSaved = paintSaved; paintCards(); paintSaved();

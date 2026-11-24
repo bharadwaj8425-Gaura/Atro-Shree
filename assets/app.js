@@ -7,14 +7,14 @@
   let lang = LS.get('as_lang', (navigator.language || '').startsWith('hi') ? 'hi' : 'en');
   const T = (en, hi) => (lang === 'hi' && hi ? hi : en);
   const vid = (() => { let v = LS.get('as_vid'); if (!v) { v = 'v' + Math.random().toString(36).slice(2) + Date.now().toString(36); LS.set('as_vid', v); } return v; })();
-  const WA = '918484013977', PHONE = '+91 84840 13977', INSTA = 'https://www.instagram.com/astro_shree25_/';
+  const WA = '918484013977', PHONE = '+91 84840 13977', INSTA = 'https://www.instagram.com/astro_shree25_/', EMAIL = 'manasvi@msmyshree.eu.org';
   const DEFAULT_UPI = { id: '8484013977@ybl', name: 'Astro Shree' }; // PhonePe UPI ID
   const waLink = text => `https://wa.me/${WA}?text=${encodeURIComponent(text)}`;
   const todayKey = () => { try { return new Date().toLocaleDateString('en-CA', { timeZone: (window.App && App.tz) || 'Asia/Kolkata' }); } catch (e) { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; } }; // date in the user's city (IST by default)
   const fmtTime = d => d ? d.toLocaleTimeString(lang === 'hi' ? 'hi-IN' : 'en-IN', { hour: '2-digit', minute: '2-digit', timeZone: App.tz || 'Asia/Kolkata' }) : '—';
   const fmtDate = (d, o) => d ? d.toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', Object.assign({ day: 'numeric', month: 'short', year: 'numeric', timeZone: App.tz || 'Asia/Kolkata' }, o || {})) : '—';
   function toast(msg, ms) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), ms || 3200); }
-  function log(event, extra) { try { const b = Object.assign({ event, visitor_id: vid, lang }, extra || {}); fetch('/api/log', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b), keepalive: true }).catch(() => { }); } catch (e) { } }
+  function log(event, extra) { try { const b = Object.assign({ event, visitor_id: vid, lang }, extra || {}); fetch(AS_API + '/api/log', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b), keepalive: true }).catch(() => { }); } catch (e) { } }
 
   /* ---------------- services catalog ---------------- */
   const SERVICES = [
@@ -42,7 +42,7 @@
       pts: [['Cards drawn live on video', 'वीडियो पर लाइव कार्ड'], ['Ask follow-up questions', 'आगे के सवाल पूछें'], ['Energy cleansing tips', 'ऊर्जा शुद्धि के उपाय']] }
   ];
 
-  const App = window.App = { LS, $, $$, esc, T, toast, log, vid, waLink, WA, PHONE, INSTA, SERVICES, routes: {}, cfg: { prices: {} }, todayKey, fmtTime, fmtDate, tz: 'Asia/Kolkata', get lang() { return lang; } };
+  const App = window.App = { LS, $, $$, esc, T, toast, log, vid, waLink, WA, PHONE, INSTA, EMAIL, SERVICES, routes: {}, cfg: { prices: {} }, todayKey, fmtTime, fmtDate, tz: 'Asia/Kolkata', get lang() { return lang; } };
   App.price = id => (App.cfg.prices && App.cfg.prices[id]) || (SERVICES.find(s => s.id === id) || {}).price;
 
   /* ---------------- layout ---------------- */
@@ -54,7 +54,7 @@
     document.documentElement.lang = lang; document.body.classList.toggle('hi', lang === 'hi'); if (App.offerBar) App.offerBar();
     $('#foot').innerHTML = `<div class="grid g4">
       <div><img src="images/logo-full.svg" alt="Astro Shree — Know your hidden destiny" style="width:220px;margin-bottom:8px"><p>${T('Vedic astrology, numerology & tarot with love and honesty — by Manasvi Bharadwaj.', 'प्रेम और ईमानदारी के साथ वैदिक ज्योतिष, अंक ज्योतिष और टैरो — मानसवी भारद्वाज द्वारा।')}</p>
-        <a href="${waLink('Radhe Radhe 🙏')}" target="_blank" rel="noopener">💬 WhatsApp ${PHONE}</a><a href="${INSTA}" target="_blank" rel="noopener">📸 Instagram @astro_shree25_</a></div>
+        <a href="${waLink('Radhe Radhe 🙏')}" target="_blank" rel="noopener">💬 WhatsApp ${PHONE}</a><a href="mailto:${EMAIL}">✉️ ${EMAIL}</a><a href="${INSTA}" target="_blank" rel="noopener">📸 Instagram @astro_shree25_</a></div>
       <div><h4>${T('Free Tools', 'फ़्री टूल्स')}</h4><a href="#/kundli">${T('Janam Kundli', 'जन्म कुंडली')}</a><a href="#/milan">${T('Kundli Milan', 'कुंडली मिलान')}</a><a href="#/panchang">${T('Aaj ka Panchang', 'आज का पंचांग')}</a><a href="#/rashifal">${T('Daily Rashifal', 'दैनिक राशिफल')}</a><a href="#/numerology">${T('Numerology', 'अंक ज्योतिष')}</a><a href="#/tarot">${T('Tarot', 'टैरो')}</a></div>
       <div><h4>${T('Explore', 'और देखें')}</h4><a href="#/games">🎮 ${T('Divine Games', 'दिव्य गेम्स')}</a><a href="#/chat">🤖 Shree AI</a><a href="#/vault">👨‍👩‍👧 ${T('Family Kundli Vault', 'परिवार कुंडली तिजोरी')}</a><a href="#/vrat">🪔 ${T('Vrat Calendar', 'व्रत कैलेंडर')}</a><a href="#/blessings">🙏 ${T('Divine Blessings', 'दिव्य आशीर्वाद')}</a><a href="#/seva">💎 ${T('Book a Reading', 'रीडिंग बुक करें')}</a></div>
       <div><h4>${T('Policies', 'नीतियाँ')}</h4><a href="#/privacy">${T('Privacy Policy', 'गोपनीयता नीति')}</a><a href="#/terms">${T('Terms & Refund', 'नियम व रिफ़ंड')}</a><a href="#/seva">${T('Pricing', 'मूल्य')}</a></div></div>
@@ -110,7 +110,7 @@
   App.priceHTML = id => { const b = App.price(id), a = App.after(id); return a < b ? `<s class="mrp">₹${b}</s> ₹${a} <span class="offtag">-${App.offer().pct}%</span>` : `₹${b}`; };
   App.daysLeft = () => Math.max(0, Math.ceil((Date.parse(App.offer().till + 'T23:59:59+05:30') - Date.now()) / 864e5));
   App.localQuote = (id, coupon) => { const base = App.price(id), after = App.after(id), code = String(coupon || '').trim().toUpperCase(), off = LOCAL_COUPONS[code] || 0; return { base, after, coupon: off ? code : null, couponOff: off, couponInvalid: !!code && !off, final: Math.max(21, after - off) }; };
-  App.quote = async (id, coupon) => { try { const r = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'quote', service: id, coupon }) }); if (!r.ok) throw 0; return await r.json(); } catch (e) { return App.localQuote(id, coupon); } };
+  App.quote = async (id, coupon) => { try { const r = await fetch(AS_API + '/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'quote', service: id, coupon }) }); if (!r.ok) throw 0; return await r.json(); } catch (e) { return App.localQuote(id, coupon); } };
   App.winCoupon = (code, why) => { const w = LS.get('as_coupons', []); if (!w.some(c => c.code === code)) { w.push({ code, why, t: Date.now() }); LS.set('as_coupons', w); } LS.set('as_coupon', code); };
   function offerBar() {
     let bar = $('#offerbar'); const o = App.offer();
@@ -227,7 +227,7 @@
 
     <section class="sec" style="background:var(--bg2)"><div class="wrap faq" style="max-width:820px"><div class="center"><h2 class="title">❓ ${T('Common questions', 'आम सवाल')}</h2></div>
       ${[['How accurate is the free kundli?', 'फ़्री कुंडली कितनी सटीक है?', 'Planet positions use a modern astronomical engine with Lahiri ayanamsa — the standard of Indian panchangs. Accuracy depends most on your exact birth time.', 'ग्रहों की गणना आधुनिक खगोलीय इंजन और लाहिड़ी अयनांश से होती है — भारतीय पंचांगों का मानक। सटीकता सबसे ज़्यादा सही जन्म समय पर निर्भर है।'],
-        ['How do I pay and use a coupon?', 'भुगतान और कूपन कैसे इस्तेमाल करें?', 'Choose a service, enter your coupon (e.g. SHUBH11) in the booking form, scan the UPI QR, then upload the screenshot with the UTR number. You get confirmation on WhatsApp.', 'सेवा चुनें, बुकिंग फ़ॉर्म में कूपन (जैसे SHUBH11) डालें, UPI QR स्कैन करें, फिर UTR नंबर के साथ स्क्रीनशॉट अपलोड करें। WhatsApp पर पुष्टि मिलेगी।'],
+        ['How do I pay and use a coupon?', 'भुगतान और कूपन कैसे इस्तेमाल करें?', 'Choose a service, enter your coupon (e.g. SHUBH11) in the booking form, scan the UPI QR, then type the 12-digit UTR number — no screenshot needed. Your booking is confirmed instantly.', 'सेवा चुनें, बुकिंग फ़ॉर्म में कूपन (जैसे SHUBH11) डालें, UPI QR स्कैन करें, फिर 12-अंकीय UTR नंबर डालें — स्क्रीनशॉट की ज़रूरत नहीं। बुकिंग तुरंत कन्फ़र्म।'],
         ['Is my data safe?', 'क्या मेरा डेटा सुरक्षित है?', 'Your birth details stay in your browser unless you choose to save or book. We never sell your data.', 'आपका जन्म विवरण आपके ब्राउज़र में ही रहता है, जब तक आप सेव या बुक न करें। हम डेटा कभी नहीं बेचते।']
       ].map(q => `<details><summary>${T(q[0], q[1])}</summary><p class="muted">${T(q[2], q[3])}</p></details>`).join('')}</div></section>`;
     starfield($('#stars'));
@@ -260,13 +260,13 @@
     $('#rvSend').onclick = async () => {
       const b = { name: $('#rvName').value.trim(), city: $('#rvCity').value.trim(), text: $('#rvText').value.trim(), rating: stars, visitor_id: vid };
       if (!b.name || b.text.length < 10) return toast(T('Please write your name and a few words 🙏', 'कृपया नाम और कुछ शब्द लिखें 🙏'));
-      try { const r = await fetch('/api/reviews', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) }); const j = await r.json(); if (!r.ok) throw new Error(j.error); toast(T('Thank you! 🙏 Your review will appear soon.', 'धन्यवाद! 🙏 आपकी समीक्षा जल्द दिखेगी।')); $('#rvText').value = ''; }
+      try { const r = await fetch(AS_API + '/api/reviews', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) }); const j = await r.json(); if (!r.ok) throw new Error(j.error); toast(T('Thank you! 🙏 Your review will appear soon.', 'धन्यवाद! 🙏 आपकी समीक्षा जल्द दिखेगी।')); $('#rvText').value = ''; }
       catch (e) { toast(e.message || 'Error'); }
     };
   };
   async function loadReviews() {
     const box = $('#reviews'); if (!box) return;
-    try { const r = await fetch('/api/reviews'); const j = await r.json(); const rows = j.rows || [];
+    try { const r = await fetch(AS_API + '/api/reviews'); const j = await r.json(); const rows = j.rows || [];
       box.innerHTML = rows.length ? rows.slice(0, 9).map(x => `<div class="card review"><div class="stars-row">${'★'.repeat(x.rating || 5)}</div><p style="margin:0">“${esc(x.text)}”</p><div class="who">— ${esc(x.name)}${x.city ? ', ' + esc(x.city) : ''}</div></div>`).join('')
         : `<div class="card center" style="grid-column:1/-1"><p class="muted">${T('Be the first to share your Astro-Shree experience 🙏', 'अपना एस्ट्रो-श्री अनुभव साझा करने वाले पहले व्यक्ति बनें 🙏')}</p></div>`;
     } catch (e) { box.innerHTML = `<div class="card center" style="grid-column:1/-1"><p class="muted">${T('Be the first to share your Astro-Shree experience 🙏', 'अपना एस्ट्रो-श्री अनुभव साझा करने वाले पहले व्यक्ति बनें 🙏')}</p></div>`; }
@@ -287,8 +287,8 @@
     v.innerHTML = App.phead('🙏 ' + T('Jyotish Seva — Book a Reading', 'ज्योतिष सेवा — रीडिंग बुक करें'), T('Personal readings by Manasvi Bharadwaj. Pay by any UPI app — GPay, PhonePe, Paytm, BHIM.', 'मानसवी भारद्वाज द्वारा व्यक्तिगत रीडिंग। किसी भी UPI ऐप से भुगतान — GPay, PhonePe, Paytm, BHIM।')) +
       (App.offer().active ? `<div class="wrap" style="margin-top:20px"><div class="cta-box" style="background:linear-gradient(90deg,#3b0764,#6d28d9 60%,#d97706)"><div><h3>🎉 ${T(App.offer().name, 'लॉन्च ऑफ़र')}: ${App.offer().pct}% OFF ${T('on every reading', 'हर रीडिंग पर')}</h3><div class="small">${T('Ends in', 'समाप्ति में')} ${App.daysLeft()} ${T('days', 'दिन')} · ${T('Have a coupon from games? Apply it while booking.', 'गेम्स से कूपन मिला है? बुकिंग में लगाएँ।')}</div></div><a class="btn btn-gold" href="#/games">🎡 ${T('Win a coupon', 'कूपन जीतें')}</a></div></div>` : '') +
       `<section class="sec"><div class="wrap"><div class="tabs">${cats.map(c => `<button data-c="${c[0]}">${c[1]} ${T(c[2], c[3])}</button>`).join('')}</div><div class="grid g3" id="svcs"></div>
-      <div class="card" style="margin-top:28px"><h3>🛡️ ${T('How booking works', 'बुकिंग कैसे होती है')}</h3><ol class="steps"><li>${T('Choose a service and fill your details (birth details help a lot).', 'सेवा चुनें और अपनी जानकारी भरें (जन्म विवरण बहुत मदद करता है)।')}</li><li>${T('Scan the UPI QR or tap "Pay" on your phone — exact amount is pre-filled.', 'UPI QR स्कैन करें या फ़ोन पर "Pay" दबाएँ — सही राशि पहले से भरी होती है।')}</li><li>${T('Upload the payment screenshot with the 12-digit UTR. It is checked instantly.', '12-अंकीय UTR के साथ भुगतान स्क्रीनशॉट अपलोड करें। तुरंत जाँच होती है।')}</li><li>${T('Manasvi ji contacts you on WhatsApp with your reading or call slot.', 'मानसवी जी WhatsApp पर रीडिंग या कॉल का समय भेजती हैं।')}</li></ol>
-      <p class="small muted">${T('Need help? ', 'मदद चाहिए? ')}<a href="${waLink('Radhe Radhe 🙏 I need help with booking')}" target="_blank" rel="noopener">WhatsApp ${PHONE}</a> · <a href="#/terms">${T('Refund policy', 'रिफ़ंड नीति')}</a></p></div></div></section>`;
+      <div class="card" style="margin-top:28px"><h3>🛡️ ${T('How booking works', 'बुकिंग कैसे होती है')}</h3><ol class="steps"><li>${T('Choose a service and fill your details (birth details help a lot).', 'सेवा चुनें और अपनी जानकारी भरें (जन्म विवरण बहुत मदद करता है)।')}</li><li>${T('Scan the UPI QR or tap "Pay" on your phone — exact amount is pre-filled.', 'UPI QR स्कैन करें या फ़ोन पर "Pay" दबाएँ — सही राशि पहले से भरी होती है।')}</li><li>${T('Type the 12-digit UTR from your payment app — confirmed instantly, no screenshot.', 'भुगतान ऐप से 12-अंकीय UTR डालें — तुरंत कन्फ़र्म, स्क्रीनशॉट नहीं चाहिए।')}</li><li>${T('Manasvi ji contacts you on WhatsApp with your reading or call slot.', 'मानसवी जी WhatsApp पर रीडिंग या कॉल का समय भेजती हैं।')}</li></ol>
+      <p class="small muted">${T('Need help? ', 'मदद चाहिए? ')}<a href="${waLink('Radhe Radhe 🙏 I need help with booking')}" target="_blank" rel="noopener">WhatsApp ${PHONE}</a> · <a href="mailto:${EMAIL}">✉️ ${EMAIL}</a> · <a href="#/terms">${T('Refund policy', 'रिफ़ंड नीति')}</a></p></div></div></section>`;
     const paint = () => { $$('.tabs button', v).forEach(b => b.classList.toggle('on', b.dataset.c === cat)); $('#svcs').innerHTML = SERVICES.filter(s => cat === 'all' || s.cat === cat).map(s => svcCard(s.id)).join(''); };
     $$('.tabs button', v).forEach(b => b.onclick = () => { cat = b.dataset.c; paint(); }); paint();
   };
@@ -353,9 +353,9 @@
       <div><div class="amt">₹${price}</div><div class="small">${T('UPI ID', 'UPI आईडी')}: <b>${esc(up.id)}</b> <button class="btn btn-ghost btn-sm" id="cpy">${T('Copy', 'कॉपी')}</button></div><div class="small muted">${T('Paying to', 'भुगतान')}: <b>${esc(up.name)}</b></div>
       ${mobile ? `<div class="paybtns">${appBtn('💜 PhonePe', 'com.phonepe.app', 'phonepe://pay?', 'pb-phonepe')}${appBtn('💙 Google Pay', 'com.google.android.apps.nbu.paisa.user', 'tez://upi/pay?', 'pb-gpay')}${appBtn('🩵 Paytm', 'net.one97.paytm', 'paytmmp://pay?', 'pb-paytm')}<a class="btn btn-sm pb-any" href="${link}">📲 ${T('Any UPI app', 'कोई भी UPI ऐप')}</a></div>` : `<p class="small muted" style="margin-top:8px">📱 ${T('Open GPay / PhonePe / Paytm on your phone → Scan → pay', 'फ़ोन पर GPay / PhonePe / Paytm खोलें → स्कैन करें → भुगतान करें')}</p>`}
       <button class="btn btn-ghost btn-sm" id="saveQr" style="margin-top:8px">⬇️ ${T('Save QR (scan from gallery)', 'QR सेव करें (गैलरी से स्कैन)')}</button></div></div>
-      <ol class="steps"><li>${T('Pay exactly', 'ठीक')} <b>₹${price}</b> ${T('using the QR or UPI ID.', 'QR या UPI आईडी से भुगतान करें।')}</li><li>${T('Copy the 12-digit UTR / UPI Ref. No. from your payment app.', 'भुगतान ऐप से 12-अंकीय UTR / UPI Ref. No. कॉपी करें।')}</li><li>${T('Paste it below, add the screenshot and submit.', 'नीचे पेस्ट करें, स्क्रीनशॉट जोड़ें और सबमिट करें।')}</li></ol>
-      <input class="inp" id="utr" inputmode="numeric" autocomplete="off" placeholder="${T('UTR / UPI reference number (12 digits)', 'UTR / UPI रेफ़रेंस नंबर (12 अंक)')}">
-      <label class="shot" id="shotL"><input type="file" id="shotF" accept="image/*" hidden><span id="shotT">📷 ${T('Upload payment screenshot', 'भुगतान स्क्रीनशॉट अपलोड करें')}</span></label>
+      <ol class="steps"><li>${T('Pay exactly', 'ठीक')} <b>₹${price}</b> ${T('using the QR or UPI ID.', 'QR या UPI आईडी से भुगतान करें।')}</li><li>${T('Copy the 12-digit UTR / UPI Ref. No. from your payment app.', 'भुगतान ऐप से 12-अंकीय UTR / UPI Ref. No. कॉपी करें।')}</li><li>${T('Paste it below and tap confirm — your booking is confirmed instantly. No screenshot needed.', 'नीचे पेस्ट करें और कन्फ़र्म दबाएँ — बुकिंग तुरंत कन्फ़र्म। स्क्रीनशॉट की ज़रूरत नहीं।')}</li></ol>
+      <input class="inp" id="utr" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="${T('UTR / UPI Ref. No. (12 digits)', 'UTR / UPI रेफ़. नंबर (12 अंक)')}" style="font-size:1.15rem;letter-spacing:.08em">
+      <div class="tiny muted" id="utrHint" style="margin-top:6px">${T('PhonePe: “UTR” · Google Pay: “UPI transaction ID” · Paytm: “UPI Ref. No.”', 'PhonePe: “UTR” · Google Pay: “UPI transaction ID” · Paytm: “UPI Ref. No.”')}</div>
       <button class="btn btn-gold btn-lg btn-block" style="margin-top:12px" id="paid">${T('I have paid — confirm booking', 'मैंने भुगतान कर दिया — बुकिंग कन्फ़र्म करें')}</button>
       <p class="tiny muted center" style="margin-top:8px">${T('Problem paying?', 'भुगतान में समस्या?')} <a target="_blank" rel="noopener" href="${waLink(`Radhe Radhe 🙏 I need help paying ₹${price} for ${s.en}`)}">WhatsApp ${PHONE}</a></p>`;
     $('#cpy', m.el).onclick = () => { navigator.clipboard && navigator.clipboard.writeText(up.id); toast(T('UPI ID copied', 'UPI आईडी कॉपी हुई')); };
@@ -365,20 +365,20 @@
         x.fillStyle = '#1e1446'; x.font = 'bold 40px sans-serif'; x.textAlign = 'center'; x.fillText('Astro Shree', 300, 70); x.font = 'bold 44px sans-serif'; x.fillStyle = '#5b21b6'; x.fillText('₹' + price, 300, 660); x.font = '24px sans-serif'; x.fillStyle = '#444'; x.fillText(up.id + ' · GPay / PhonePe / Paytm', 300, 710);
         URL.revokeObjectURL(url); c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `AstroShree-UPI-${price}.png`; a.click(); toast(T('QR saved — open your UPI app → Scan → Gallery', 'QR सेव हुआ — UPI ऐप खोलें → स्कैन → गैलरी')); }); };
       img.src = url; };
-    let shot = null;
-    $('#shotF', m.el).onchange = async e => { const f = e.target.files[0]; if (!f) return; try { shot = await shrinkImage(f); $('#shotT', m.el).innerHTML = '✅ ' + T('Screenshot added', 'स्क्रीनशॉट जुड़ गया'); $('#shotL', m.el).classList.add('ok'); } catch (er) { shot = null; toast(T('Could not read that image', 'यह इमेज नहीं पढ़ी जा सकी')); } };
+    const utrIn = $('#utr', m.el), utrHint = $('#utrHint', m.el), hint0 = utrHint.innerHTML;
+    utrIn.oninput = () => { const v = utrIn.value.replace(/\D/g, '').slice(0, 12); if (utrIn.value !== v) utrIn.value = v;
+      utrHint.innerHTML = v.length === 12 ? '✅ ' + T('12 digits — looks good', '12 अंक — सही है') : v.length ? `${v.length}/12 ${T('digits', 'अंक')}` : hint0; };
     $('#paid', m.el).onclick = async () => {
-      const utr = $('#utr', m.el).value.replace(/\s/g, '').toUpperCase();
-      if (!/^[A-Z0-9]{10,24}$/.test(utr)) { toast(T('Please paste the 12-digit UTR number', 'कृपया 12-अंकीय UTR नंबर डालें')); return $('#utr', m.el).focus(); }
-      if (!shot) return toast(T('Please upload the payment screenshot', 'कृपया भुगतान स्क्रीनशॉट अपलोड करें'));
+      const utr = $('#utr', m.el).value.replace(/\D/g, '');
+      if (!/^\d{12}$/.test(utr)) { toast(T('Please enter the 12-digit UTR number', 'कृपया 12-अंकीय UTR नंबर डालें')); return $('#utr', m.el).focus(); }
       const btn = $('#paid', m.el); btn.disabled = true; btn.innerHTML = '<span class="loading"></span> ' + T('Checking your payment…', 'आपका भुगतान जाँचा जा रहा है…');
       try {
-        const r = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_request', service: s.id, coupon: who.coupon, name: who.name, phone: who.phone, utr, screenshot: shot, details: who.details, visitor_id: vid, lang }) });
+        const r = await fetch(AS_API + '/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_request', service: s.id, coupon: who.coupon, name: who.name, phone: who.phone, utr, details: who.details, visitor_id: vid, lang }) });
         let j; try { j = await r.json(); } catch (er) { j = null; }
         if (!j || r.status === 404 || r.status === 405 || (r.status === 400 && /switched on/i.test(j.error || ''))) { // backend not reachable (e.g. preview) → hand over on WhatsApp
-          const d = who.details, msg = `Radhe Radhe 🙏 Payment done ✅\nService: ${s.en}\nAmount: ₹${price}${who.coupon ? ' (coupon ' + who.coupon + ')' : ''}\nUTR: ${utr}\nName: ${who.name}\nPhone: ${who.phone}${d.dob ? `\nDOB: ${d.dob} ${d.tob || ''} ${d.place || ''}` : ''}${d.question ? `\nQuestion: ${d.question}` : ''}\n(Screenshot attached)`;
+          const d = who.details, msg = `Radhe Radhe 🙏 Payment done ✅\nService: ${s.en}\nAmount: ₹${price}${who.coupon ? ' (coupon ' + who.coupon + ')' : ''}\nUTR: ${utr}\nName: ${who.name}\nPhone: ${who.phone}${d.dob ? `\nDOB: ${d.dob} ${d.tob || ''} ${d.place || ''}` : ''}${d.question ? `\nQuestion: ${d.question}` : ''}`;
           m.setTitle('🙏 ' + T('Almost done!', 'बस एक कदम!'));
-          m.el.innerHTML = `<p>${T('Send your payment details to Manasvi ji on WhatsApp and attach the screenshot.', 'भुगतान विवरण WhatsApp पर मानसवी जी को भेजें और स्क्रीनशॉट लगाएँ।')}</p><a class="btn btn-green btn-lg btn-block" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Send on WhatsApp', 'WhatsApp पर भेजें')}</a>`; return; }
+          m.el.innerHTML = `<p>${T('Send your payment details (UTR) to Manasvi ji on WhatsApp.', 'भुगतान विवरण (UTR) WhatsApp पर मानसवी जी को भेजें।')}</p><a class="btn btn-green btn-lg btn-block" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Send on WhatsApp', 'WhatsApp पर भेजें')}</a>`; return; }
         if (!r.ok) throw new Error(j.error || 'Error');
         LS.set('as_bookings', (LS.get('as_bookings') || []).concat([{ id: j.booking, order: j.order_id, claim: j.claim, svc: s.id, t: Date.now() }]).slice(-20));
         if (j.token) App.addToken(j.token, j.unlocks, j.booking);
@@ -386,7 +386,7 @@
         const show = (ok) => {
           m.setTitle(ok ? '✅ ' + T('Booking confirmed!', 'बुकिंग कन्फ़र्म!') : '⏳ ' + T('Booking received', 'बुकिंग प्राप्त हुई'));
           m.el.innerHTML = `<div class="center"><div style="font-size:3.4rem">${ok ? '🎉' : '🙏'}</div><h3>${T('Booking', 'बुकिंग')} #${esc(j.booking)}</h3>
-            <p>${ok ? T('Payment verified! Your Premium Report is unlocked right now, and Manasvi ji will contact you on WhatsApp soon.', 'भुगतान सत्यापित! आपकी प्रीमियम रिपोर्ट अभी खुल गई है, और मानसवी जी जल्द WhatsApp पर संपर्क करेंगी।') : T('We received your booking. Your payment is being verified — this page unlocks your Premium Report automatically as soon as it is approved.', 'बुकिंग मिल गई। भुगतान की जाँच हो रही है — स्वीकृत होते ही आपकी प्रीमियम रिपोर्ट अपने-आप खुल जाएगी।')}</p>
+            <p>${ok ? T('Booking confirmed! Your Premium Report is unlocked right now, and Manasvi ji will contact you on WhatsApp soon.', 'बुकिंग कन्फ़र्म! आपकी प्रीमियम रिपोर्ट अभी खुल गई है, और मानसवी जी जल्द WhatsApp पर संपर्क करेंगी।') : T('We received your booking. Your payment is being verified — this page unlocks your Premium Report automatically as soon as it is approved.', 'बुकिंग मिल गई। भुगतान की जाँच हो रही है — स्वीकृत होते ही आपकी प्रीमियम रिपोर्ट अपने-आप खुल जाएगी।')}</p>
             ${ok ? `<a class="btn btn-gold btn-lg btn-block" href="#/my" id="goMy">📜 ${T('Open my Premium Report', 'मेरी प्रीमियम रिपोर्ट खोलें')}</a>` : `<div class="small muted"><span class="loading"></span> ${T('Waiting for approval…', 'स्वीकृति की प्रतीक्षा…')}</div>`}
             <a class="btn btn-green btn-block" style="margin-top:10px" target="_blank" rel="noopener" href="${waLink(msg)}">💬 ${T('Message Manasvi ji on WhatsApp', 'WhatsApp पर मानसवी जी को संदेश भेजें')}</a></div>`;
           const g = $('#goMy', m.el); if (g) g.onclick = () => m.close();
@@ -395,8 +395,8 @@
         if (j.status !== 'paid') { // poll until the admin approves (or the modal is closed)
           const poll = setInterval(async () => {
             if (!m.el.isConnected) return clearInterval(poll);
-            try { const r2 = await fetch('/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_status', order_id: j.order_id, claim: j.claim }) }); const s2 = await r2.json();
-              if (s2.token) { App.addToken(s2.token, s2.unlocks, s2.booking); clearInterval(poll); show(true); } else if (s2.status === 'rejected') { clearInterval(poll); m.el.querySelector('.small').innerHTML = '❌ ' + T('Payment could not be verified. Please WhatsApp us with the screenshot.', 'भुगतान सत्यापित नहीं हो सका। कृपया स्क्रीनशॉट के साथ WhatsApp करें।'); } } catch (e) { }
+            try { const r2 = await fetch(AS_API + '/api/pay', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'upi_status', order_id: j.order_id, claim: j.claim }) }); const s2 = await r2.json();
+              if (s2.token) { App.addToken(s2.token, s2.unlocks, s2.booking); clearInterval(poll); show(true); } else if (s2.status === 'rejected') { clearInterval(poll); m.el.querySelector('.small').innerHTML = '❌ ' + T('Payment could not be verified. Please WhatsApp us with your UTR.', 'भुगतान सत्यापित नहीं हो सका। कृपया UTR के साथ WhatsApp करें।'); } } catch (e) { }
           }, 15000);
         }
       } catch (e) { btn.disabled = false; btn.textContent = T('I have paid — confirm booking', 'मैंने भुगतान कर दिया — बुकिंग कन्फ़र्म करें'); toast(e.message, 5000); }
@@ -424,7 +424,7 @@
       hist.push({ role: 'user', text }); paint(); $('#q').value = '';
       logEl.insertAdjacentHTML('beforeend', '<div class="msg a typing" id="typ"><span></span><span></span><span></span></div>'); logEl.scrollTop = 1e6;
       try {
-        const r = await fetch('/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: hist.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'ai', text: m.text })), lang, chart: me && App.chartSummary ? App.chartSummary(me) : null, visitor_id: vid }) });
+        const r = await fetch(AS_API + '/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: hist.slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'ai', text: m.text })), lang, chart: me && App.chartSummary ? App.chartSummary(me) : null, visitor_id: vid }) });
         const j = await r.json(); if (!r.ok) throw new Error(j.error || 'Error');
         hist.push({ role: 'ai', text: j.text }); LS.set(usedKey, used + 1); log('chat', { meta: { q: text.slice(0, 200) } });
       } catch (e) { hist.push({ role: 'ai', text: '🙏 ' + (e.message || T('Shree AI is resting. Please try again.', 'श्री AI अभी विश्राम में है। कृपया दोबारा प्रयास करें।')) }); }
@@ -439,22 +439,22 @@
     <p>${T('Astro-Shree (astro-shree.com), run by Manasvi Bharadwaj, respects your privacy.', 'एस्ट्रो-श्री (astro-shree.com), मानसवी भारद्वाज द्वारा संचालित, आपकी गोपनीयता का सम्मान करता है।')}</p>
     <h3>${T('What we collect', 'हम क्या एकत्र करते हैं')}</h3><ul><li>${T('Anonymous usage (which tools are used, approximate country) to improve the site.', 'साइट सुधारने के लिए गुमनाम उपयोग जानकारी (कौन से टूल, अनुमानित देश)।')}</li>
     <li>${T('Your name, WhatsApp number and birth details — only when you tick "save my details" or make a booking.', 'आपका नाम, WhatsApp नंबर और जन्म विवरण — केवल तब जब आप "मेरी जानकारी सेव करें" चुनें या बुकिंग करें।')}</li>
-    <li>${T('For bookings: payment UTR number and screenshot, to verify your payment.', 'बुकिंग के लिए: भुगतान सत्यापन हेतु UTR नंबर और स्क्रीनशॉट।')}</li>
+    <li>${T('For bookings: the payment UTR number, to match your payment.', 'बुकिंग के लिए: भुगतान मिलान हेतु UTR नंबर।')}</li>
     <li>${T('Shree AI questions are sent to Google Gemini to generate answers; Google may process this text under its terms. Please do not share sensitive personal information in chat.', 'श्री AI के सवाल उत्तर बनाने के लिए Google Gemini को भेजे जाते हैं; Google अपनी शर्तों के अनुसार इसे प्रोसेस कर सकता है। कृपया चैट में संवेदनशील निजी जानकारी न लिखें।')}</li></ul>
     <h3>${T('How we use it', 'हम इसका उपयोग कैसे करते हैं')}</h3><p>${T('Only to give you readings, contact you about your booking, and (if you agreed) send occasional predictions on WhatsApp. We never sell your data.', 'केवल आपको रीडिंग देने, बुकिंग के बारे में संपर्क करने और (आपकी सहमति पर) कभी-कभी WhatsApp पर भविष्यफल भेजने के लिए। हम आपका डेटा कभी नहीं बेचते।')}</p>
-    <h3>${T('Your choices', 'आपके विकल्प')}</h3><p>${T('Family Vault and saved kundlis stay in your own browser. To delete data we hold, message us on WhatsApp', 'परिवार तिजोरी और सेव कुंडलियाँ आपके अपने ब्राउज़र में रहती हैं। हमारे पास रखा डेटा हटवाने के लिए WhatsApp करें')} <a href="${waLink('Please delete my Astro-Shree data')}" target="_blank" rel="noopener">${PHONE}</a>.</p></div></section>`; };
+    <h3>${T('Your choices', 'आपके विकल्प')}</h3><p>${T('Family Vault and saved kundlis stay in your own browser. To delete data we hold, message us on WhatsApp', 'परिवार तिजोरी और सेव कुंडलियाँ आपके अपने ब्राउज़र में रहती हैं। हमारे पास रखा डेटा हटवाने के लिए WhatsApp करें')} <a href="${waLink('Please delete my Astro-Shree data')}" target="_blank" rel="noopener">${PHONE}</a> ${T('or email', 'या ईमेल करें')} <a href="mailto:${EMAIL}">${EMAIL}</a>.</p></div></section>`; };
   App.routes.terms = v => { v.innerHTML = App.phead(T('Terms & Refund Policy', 'नियम व रिफ़ंड नीति')) + `<section class="sec"><div class="wrap card" style="max-width:860px">
     <h3>${T('Services', 'सेवाएँ')}</h3><p>${T('Readings are spiritual guidance based on Vedic astrology, numerology and tarot. They are not a substitute for medical, legal, financial or psychological advice, and outcomes are not guaranteed. Games are for entertainment only.', 'रीडिंग वैदिक ज्योतिष, अंक ज्योतिष और टैरो पर आधारित आध्यात्मिक मार्गदर्शन हैं। ये चिकित्सा, कानूनी, वित्तीय या मनोवैज्ञानिक सलाह का विकल्प नहीं हैं और परिणाम की गारंटी नहीं है। गेम्स केवल मनोरंजन के लिए हैं।')}</p>
     <h3>${T('Delivery', 'डिलीवरी')}</h3><p>${T('Written readings are delivered on WhatsApp within the time shown on each service. Calls are scheduled with you on WhatsApp.', 'लिखित रीडिंग प्रत्येक सेवा पर दिखाए समय में WhatsApp पर दी जाती है। कॉल का समय WhatsApp पर आपके साथ तय होता है।')}</p>
     <h3>${T('Refunds', 'रिफ़ंड')}</h3><ul><li>${T('If we cannot deliver your reading or call, you get a full refund to the same UPI account.', 'यदि हम आपकी रीडिंग या कॉल नहीं दे पाते, तो उसी UPI खाते में पूरा रिफ़ंड मिलेगा।')}</li><li>${T('If you paid twice or the wrong amount, message us within 7 days for a refund of the extra amount.', 'दो बार या गलत राशि भुगतान होने पर 7 दिन में संदेश करें — अतिरिक्त राशि लौटाई जाएगी।')}</li><li>${T('Once a reading has been delivered or a call completed, the fee is non-refundable.', 'रीडिंग देने या कॉल पूरी होने के बाद शुल्क वापस नहीं होता।')}</li></ul>
-    <p>${T('Contact', 'संपर्क')}: <a href="${waLink('Radhe Radhe 🙏')}" target="_blank" rel="noopener">WhatsApp ${PHONE}</a></p></div></section>`; };
+    <p>${T('Contact', 'संपर्क')}: <a href="${waLink('Radhe Radhe 🙏')}" target="_blank" rel="noopener">WhatsApp ${PHONE}</a> · ✉️ <a href="mailto:${EMAIL}">${EMAIL}</a></p></div></section>`; };
 
   /* ---------------- start ---------------- */
   function start() {
     $('#langBtn').onclick = () => { lang = lang === 'hi' ? 'en' : 'hi'; LS.set('as_lang', lang); route(); };
     $('#burger').onclick = () => $('#menu').classList.toggle('open');
     addEventListener('hashchange', route);
-    const t0 = Date.now(); fetch('/api/config').then(r => r.json()).then(j => { App.cfg = Object.assign(App.cfg, j || {}); if (['', 'seva'].includes(current) && Date.now() - t0 < 2500 && scrollY < 200) route(); }).catch(() => { });
+    const t0 = Date.now(); fetch(AS_API + '/api/config').then(r => r.json()).then(j => { App.cfg = Object.assign(App.cfg, j || {}); if (['', 'seva'].includes(current) && Date.now() - t0 < 2500 && scrollY < 200) route(); }).catch(() => { });
     if (!LS.get('as_seen')) { LS.set('as_seen', 1); log('visit', { meta: { ref: document.referrer.slice(0, 200) } }); }
     route();
   }

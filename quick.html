@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+<title>Astro-Shree — Approve / Reject</title>
+<style>body{font-family:system-ui,sans-serif;background:#fff8ee;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px;box-sizing:border-box}
+.c{background:#fff;padding:28px;border-radius:18px;box-shadow:0 10px 40px #0001;max-width:420px;width:100%;text-align:center}
+p{color:#555;line-height:1.6}button,a.b{display:block;width:100%;margin-top:12px;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:700;color:#fff;text-decoration:none;box-sizing:border-box;cursor:pointer}
+.ok{background:#16a34a}.no{background:#dc2626}.wa{background:#25d366}button:disabled{opacity:.6}</style></head>
+<body><div class="c" id="c"><p>Loading…</p></div>
+<script src="assets/config.js"></script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), a = q.get('a'), id = q.get('id'), s = q.get('s'), c = document.getElementById('c');
+  var esc = function (x) { return String(x == null ? '' : x).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); };
+  function call(confirm) { return fetch(AS_API + '/api/quick', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ a: a, id: id, s: s, confirm: confirm }) }).then(function (r) { return r.json(); }); }
+  function info(i) { return '<p>' + esc(i.name) + ' · ' + esc(i.phone) + '<br>' + esc(i.service) + ' · ₹' + esc(i.amount) + '<br>UTR <b>' + esc(i.utr) + '</b><br>Status: <b>' + esc(i.status) + '</b></p>'; }
+  call(false).then(function (j) {
+    if (j.error) { c.innerHTML = '<h2>' + esc(j.error) + '</h2>'; return; }
+    var ap = a === 'approve';
+    c.innerHTML = '<h2>' + (ap ? '✓ Approve' : '✕ Reject') + ' this payment?</h2>' + info(j.info) +
+      (ap ? '<p style="font-size:14px">Check in PhonePe that ₹' + esc(j.info.amount) + ' arrived with this UTR.</p>' : '<p style="font-size:14px">Rejecting removes the customer\'s Premium Report access.</p>') +
+      '<button id="go" class="' + (ap ? 'ok' : 'no') + '">' + (ap ? 'Yes, money received — approve' : 'Reject payment') + '</button>';
+    document.getElementById('go').onclick = function () {
+      this.disabled = true;
+      call(true).then(function (k) {
+        if (k.error) { c.innerHTML = '<h2>' + esc(k.error) + '</h2>'; return; }
+        c.innerHTML = '<h2>' + (ap ? '✅ Approved' : '❌ Rejected') + '</h2>' + info(k.info) + (k.wa ? '<a class="b wa" href="' + esc(k.wa) + '">💬 Tell the customer on WhatsApp</a>' : '');
+      }).catch(function () { c.innerHTML = '<h2>Could not update</h2><p>Open /admin → Bookings and do it there.</p>'; });
+    };
+  }).catch(function () { c.innerHTML = '<h2>Could not load</h2><p>Open /admin → Bookings.</p>'; });
+})();
+</script></body></html>

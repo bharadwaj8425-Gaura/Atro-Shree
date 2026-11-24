@@ -1,32 +1,68 @@
- Astrology-Website
-<h1 align="center" id="title">Astrology-Website</h1>
+# ॐ Astro-Shree — Kundli · Numerology · Tarot · Divine Games
 
-<p align="center"><img src="https://socialify.git.ci/Manasvi Bharadwaj/Astrology-Website/image?forks=1&amp;issues=1&amp;language=1&amp;name=1&amp;owner=1&amp;pulls=1&amp;stargazers=1&amp;theme=Light" alt="project-image"></p>
+Website of **Manasvi Bharadwaj** — https://astro-shree.com
 
-<p id="description">Astro-Shree is a versatile and ready-to-use website template designed specifically for Vedic astrologers. With its professional aesthetic and seamless adaptability across all devices—whether phones tablets or computers—it provides an accessible platform for astrologers to connect with clients effortlessly. The design incorporates beautiful Indian cultural elements enhancing the authenticity and appeal of the site. It includes dedicated sections to showcase astrology services daily horoscopes (Rashifal) client testimonials and frequently asked questions ensuring comprehensive engagement. Clients can easily reach out via a contact form or a convenient WhatsApp button. Built using HTML Tailwind CSS and JavaScript the template delivers a modern responsive experience. Getting started is simple—just download (clone) the files and open index.html in a browser to preview the layout. Customization is straightforward allowing users to modify text images and even daily horoscope updates within the JavaScript section. Additionally astrologers can personalize booking links and contact details to match their preferences. This thoughtfully crafted template makes it easy to bring astrology services online with style and functionality.</p>
+## What's inside
 
-<p align="center"><img src="https://img.shields.io/badge/Astro-Shree-orange" alt="shields"></p>
+| Free for everyone | Paid bookings (UPI) |
+|---|---|
+| 🪐 Janam Kundli: Lagna + Navamsa chart, planets, Vimshottari dasha, Manglik | 🙏 Ek Prashn ₹51 · 💞 Kundli Milan ₹101 · 📜 Kundli report ₹151 · 📞 1:1 call ₹251 |
+| 💞 Kundli Milan: 36 gun Ashtakoota, Nadi / Bhakoot / Manglik check | 🔢 Name number ₹51 · Numerology report ₹151 · Baby/Business name ₹251 |
+| 📅 Panchang: tithi, nakshatra, yoga, karana, Rahu kaal, Abhijit, sunrise | 🃏 Tarot 1-question ₹51 · Celtic Cross ₹151 · Live tarot ₹251 |
+| ♈ Rashifal from the real Moon transit (Chandra gochar) | 👑 Sampoorna Jeevan Darshan ₹501 (all three + 30 min call) |
+| 🔢 Numerology: Mulank, Bhagyank, name number, Lo Shu grid, mobile number check | |
+| 🃏 Tarot: card of the day, 3-card spread, Yes/No | |
+| 🎮 14 daily games with streaks, badges, punya points and sharing | |
+| 🤖 Shree AI (Gemini) — reads the visitor's kundli | |
+| 👨‍👩‍👧 Family Kundli Vault — birthdays & next-dasha alerts | |
+| 🌐 Hindi / English toggle on every page | |
 
-<h2>🚀 Demo</h2>
+**Admin** (`/admin`): bookings with payment screenshots (approve / reject / mark delivered / WhatsApp the customer), leads, activity, reviews, CSV export.
 
-[https://astro-shree.com/](https://astro-shree.com/)
+Accuracy: planet positions use [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT) with Lahiri ayanamsa; checked against Swiss Ephemeris — max difference ≈ 20 arc-seconds. Run `npm test`.
 
-  
-<h2>🧐 Features</h2>
+## Offers & prizes
+- **Launch offer:** 20% off every reading till 31 Dec 2026 (₹51→₹41, ₹101→₹81, ₹151→₹121, ₹251→₹201, ₹501→₹401). Change with `OFFER_PCT`, `OFFER_TILL` (YYYY-MM-DD), `OFFER_NAME`; set `OFFER_PCT=0` to switch off.
+- **Coupons** (checked on the server): `SHUBH11` = ₹11 off (Kismat Wheel prize / 3-day streak), `SAPTAH21` = ₹21 off (7-day streak). Change with `COUPONS="SHUBH11=11,SAPTAH21=21"`. Lowest possible price is ₹21.
 
-Here're some of the project's best features:
+## How payments work (UTR only — no screenshot)
+UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works in PhonePe, Google Pay, Paytm, BHIM and all bank apps.
 
-*   Beautiful design with Indian cultural touches.
-*   Sections to showcase your astrology services daily horoscopes (Rashifal) client testimonials and FAQs.
-*   Easy ways for clients to contact you including a contact form and WhatsApp button.
-*   Built with HTML Tailwind CSS and JavaScript for a modern look and smooth experience.
+1. Customer picks a service → fills details → sees a UPI QR with the **exact amount** (or taps PhonePe / GPay / Paytm on mobile).
+2. Customer types the **12-digit UTR** (PhonePe "UTR", GPay "UPI transaction ID", Paytm "UPI Ref. No.").
+3. The server checks: exactly 12 digits, not a fake pattern (111111…, 123456…), and **never used before**. OK → booking **confirmed instantly** and the Premium Report unlocks.
+4. You get a WhatsApp alert (if CallMeBot is set) with a one-tap **✕ Reject** link. Rejecting removes the customer's access.
+5. ⚠️ No bank API is connected, so the site cannot see your bank balance — a made-up but unused 12-digit number would also pass. **Match each UTR in your PhonePe history** and reject the ones that never arrived. For fully automatic bank-verified payments you need a payment gateway (Razorpay / Cashfree, ~2% fee).
+6. Want to check every payment yourself? Admin → Overview → switch **Auto-approve** OFF.
 
-<h2>🛠️ Installation Steps:</h2>
+## Instant access after payment
+- Every paid service unlocks a **Premium Report** on the customer's phone the moment the payment is verified: Jyotish services → Premium Kundli Report, Numerology services → Premium Numerology Report, Tarot services → Premium Celtic Cross Tarot, Sampoorna → all three. Reports are written by Gemini from the customer's own chart / numbers / cards and can be printed as PDF (`#/my` — "My Reports").
+- If a payment is pending, the customer's page keeps checking and unlocks automatically when you approve it (in `/admin` or from the WhatsApp quick link).
+- **Restore access** on another phone: WhatsApp number + UTR.
+- **Admin → Overview:** ⚡ *Auto-approve payments* switch (ON = AI-verified payments confirm instantly; OFF = you approve each one) and 🔓 *Unlock all Premium Reports on this device* (free access for you).
 
-<p>1. Download (clone) the files</p>
+## Where it runs (live)
+- **Website:** GitHub Pages from the `gh-pages` branch (copy of `public/`) → https://bharadwaj8425-gaura.github.io/Atro-Shree/
+  Update after changes: `git subtree push --prefix public origin gh-pages`
+- **Backend (API):** Supabase Edge Function `astro-api` → https://ibrlngakmbqconakhqyt.supabase.co/functions/v1/astro-api (code: `lib/handlers.js` + `supabase/functions/astro-api/index.ts`). The site finds it through `public/assets/config.js`.
+- **Secrets** (Supabase → Edge Functions → Secrets): `GEMINI_API_KEY` (Shree AI + Premium Reports), `ADMIN_PASSWORD` (/admin), optional `TOKEN_SECRET`, `CALLMEBOT_APIKEY`, `UPI_NAME`, `PRICES`, `OFFER_PCT`…
+- **Domain astro-shree.com:** GitHub repo → Settings → Pages → Custom domain `astro-shree.com`. In GoDaddy DNS: `A` records for `@` → 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153 and `CNAME` `www` → `bharadwaj8425-gaura.github.io` (remove the old Netlify records).
+- Cloudflare Pages still works too (`functions/api` + same `lib/handlers.js`) if you ever move there.
 
-<p>2. Open index.html in your browser to see it.</p>
+**Change prices without code:** add variable `PRICES`, e.g. `prashn=51,call=301`.
+**WhatsApp alert on each booking (optional, free):** follow the WhatsApp setup on callmebot.com (you message their bot once and get an API key), then put the key into `CALLMEBOT_APIKEY`.
 
-<h2>🛡️ License:</h2>
+## Run on your computer
+```
+cp .env.example .env   # fill values
+node server.js          # http://localhost:3000  ·  admin: /admin
+npm test                # engine accuracy tests
+```
 
-This project is licensed under the GNU
+## Files
+- `public/` — the website (index.html, admin.html, assets/, images/)
+- `public/assets/jyotish.js` — Kundli / dasha / panchang / gun-milan engine
+- `public/assets/content.js` — numerology, tarot (78 cards), rashifal & interpretations (EN + HI)
+- `lib/handlers.js` — backend API (`/api/config, log, chat, pay, reviews, admin, quick`)
+- `functions/api/[[path]].js` — Cloudflare Pages Function entry
+- `supabase/astro_shree_tables.sql` — database tables (already applied)

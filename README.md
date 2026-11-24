@@ -25,14 +25,15 @@ Accuracy: planet positions use [astronomy-engine](https://github.com/cosinekitty
 - **Launch offer:** 20% off every reading till 31 Dec 2026 (₹51→₹41, ₹101→₹81, ₹151→₹121, ₹251→₹201, ₹501→₹401). Change with `OFFER_PCT`, `OFFER_TILL` (YYYY-MM-DD), `OFFER_NAME`; set `OFFER_PCT=0` to switch off.
 - **Coupons** (checked on the server): `SHUBH11` = ₹11 off (Kismat Wheel prize / 3-day streak), `SAPTAH21` = ₹21 off (7-day streak). Change with `COUPONS="SHUBH11=11,SAPTAH21=21"`. Lowest possible price is ₹21.
 
-## How payments work (same system as the Resume Builder)
-UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works in PhonePe, Google Pay, Paytm, BHIM and all bank apps. On mobile there are direct PhonePe / Google Pay / Paytm buttons and a "Save QR" button (scan from gallery). Set `UPI_NAME` to the account-holder name exactly as the bank shows it.
+## How payments work (UTR only — no screenshot)
+UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works in PhonePe, Google Pay, Paytm, BHIM and all bank apps.
 
-1. Customer picks a service → fills details → sees a UPI QR with the **exact amount** (or taps "Open UPI app" on mobile).
-2. Customer pastes the **UTR** and uploads the **screenshot**.
-3. Gemini reads the screenshot: amount, payee, UTR, date, success status, signs of editing. All OK → booking **auto-confirmed**; anything off → **pending**.
-4. You get a WhatsApp alert (optional) with one-tap ✓ Approve / ✕ Reject links, or approve in `/admin`.
-5. Always cross-check your UPI app before delivering.
+1. Customer picks a service → fills details → sees a UPI QR with the **exact amount** (or taps PhonePe / GPay / Paytm on mobile).
+2. Customer types the **12-digit UTR** (PhonePe "UTR", GPay "UPI transaction ID", Paytm "UPI Ref. No.").
+3. The server checks: exactly 12 digits, not a fake pattern (111111…, 123456…), and **never used before**. OK → booking **confirmed instantly** and the Premium Report unlocks.
+4. You get a WhatsApp alert (if CallMeBot is set) with a one-tap **✕ Reject** link. Rejecting removes the customer's access.
+5. ⚠️ No bank API is connected, so the site cannot see your bank balance — a made-up but unused 12-digit number would also pass. **Match each UTR in your PhonePe history** and reject the ones that never arrived. For fully automatic bank-verified payments you need a payment gateway (Razorpay / Cashfree, ~2% fee).
+6. Want to check every payment yourself? Admin → Overview → switch **Auto-approve** OFF.
 
 ## Instant access after payment
 - Every paid service unlocks a **Premium Report** on the customer's phone the moment the payment is verified: Jyotish services → Premium Kundli Report, Numerology services → Premium Numerology Report, Tarot services → Premium Celtic Cross Tarot, Sampoorna → all three. Reports are written by Gemini from the customer's own chart / numbers / cards and can be printed as PDF (`#/my` — "My Reports").
@@ -40,19 +41,13 @@ UPI ID: **8484013977@ybl** (PhonePe). The QR is a standard UPI QR — it works i
 - **Restore access** on another phone: WhatsApp number + UTR.
 - **Admin → Overview:** ⚡ *Auto-approve payments* switch (ON = AI-verified payments confirm instantly; OFF = you approve each one) and 🔓 *Unlock all Premium Reports on this device* (free access for you).
 
-## Go live on Cloudflare Pages (free) — ≈10 min
-Database tables (`astro_events`, `astro_payments`, `astro_reviews`) are already created in the Supabase project.
-
-1. dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git** → choose `Atro-Shree`.
-2. Build settings: Framework **None** · Build command *(empty)* · Output directory **`public`**.
-3. **Settings → Variables and Secrets** → add (as *Secret*) the values from `.env.example`:
-   `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, `GEMINI_API_KEY`, `UPI_ID`, `UPI_NAME`, `UPI_PAYEE_NAME`.
-   You can reuse the same Supabase and Gemini keys as the Resume Builder.
-4. **Deploy** → site opens at `astro-shree.pages.dev`. Test a booking, then open `/admin`.
-5. **Domain:** Custom domains → **Set up a domain** → `astro-shree.com` → follow Cloudflare's steps.
-   Cloudflare will show 2 nameservers — put them in **GoDaddy → My Domains → astro-shree.com → DNS → Nameservers → Change → "I'll use my own nameservers"**.
-   (Today the domain points to an old Netlify account; this step moves it to the new site. It can take a few hours.)
-6. After changing any variable: **Deployments → Retry deployment**.
+## Where it runs (live)
+- **Website:** GitHub Pages from the `gh-pages` branch (copy of `public/`) → https://bharadwaj8425-gaura.github.io/Atro-Shree/
+  Update after changes: `git subtree push --prefix public origin gh-pages`
+- **Backend (API):** Supabase Edge Function `astro-api` → https://ibrlngakmbqconakhqyt.supabase.co/functions/v1/astro-api (code: `lib/handlers.js` + `supabase/functions/astro-api/index.ts`). The site finds it through `public/assets/config.js`.
+- **Secrets** (Supabase → Edge Functions → Secrets): `GEMINI_API_KEY` (Shree AI + Premium Reports), `ADMIN_PASSWORD` (/admin), optional `TOKEN_SECRET`, `CALLMEBOT_APIKEY`, `UPI_NAME`, `PRICES`, `OFFER_PCT`…
+- **Domain astro-shree.com:** GitHub repo → Settings → Pages → Custom domain `astro-shree.com`. In GoDaddy DNS: `A` records for `@` → 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153 and `CNAME` `www` → `bharadwaj8425-gaura.github.io` (remove the old Netlify records).
+- Cloudflare Pages still works too (`functions/api` + same `lib/handlers.js`) if you ever move there.
 
 **Change prices without code:** add variable `PRICES`, e.g. `prashn=51,call=301`.
 **WhatsApp alert on each booking (optional, free):** follow the WhatsApp setup on callmebot.com (you message their bot once and get an API key), then put the key into `CALLMEBOT_APIKEY`.

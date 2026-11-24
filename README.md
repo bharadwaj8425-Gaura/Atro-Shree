@@ -22,7 +22,7 @@ Website of **Manasvi Bharadwaj** — https://astro-shree.com
 Accuracy: planet positions use [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT) with Lahiri ayanamsa; checked against Swiss Ephemeris — max difference ≈ 20 arc-seconds. Run `npm test`.
 
 ## Offers & prizes
-- **Launch offer:** 20% off every reading till 31 Dec 2026 (₹51→₹41, ₹101→₹81, ₹151→₹121, ₹251→₹201, ₹501→₹401). Change with `OFFER_PCT`, `OFFER_TILL` (YYYY-MM-DD), `OFFER_NAME`; set `OFFER_PCT=0` to switch off.
+- **Year-End Special:** 20% off every reading till 31 Dec 2026 (₹51→₹41, ₹101→₹81, ₹151→₹121, ₹251→₹201, ₹501→₹401). Change with `OFFER_PCT`, `OFFER_TILL` (YYYY-MM-DD), `OFFER_NAME`; set `OFFER_PCT=0` to switch off.
 - **Coupons** (checked on the server): `SHUBH11` = ₹11 off (Kismat Wheel prize / 3-day streak), `SAPTAH21` = ₹21 off (7-day streak). Change with `COUPONS="SHUBH11=11,SAPTAH21=21"`. Lowest possible price is ₹21.
 
 ## How payments work (UTR only — no screenshot)

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /quick.html
+
+Sitemap: https://astro-shree.com/sitemap.xml
